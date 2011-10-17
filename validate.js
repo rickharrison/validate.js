@@ -55,7 +55,9 @@
      *     display: 'Field Name'
      *     rules: required|matches[password_confirm]
      * }]
-     * @param callback - Function - The callback after validation has been performed. One argument of an array of possible errors
+     * @param callback - Function - The callback after validation has been performed.
+     *     @argument errors - An array of validation errors
+     *     @argument event - The javascript event
      */
 
     var FormValidater = function(formName, fields, callback) {
@@ -100,6 +102,11 @@
             }
         })(this);
     };
+    
+    /*
+     * @public
+     * Sets a custom message for one of the rules
+     */
     
     FormValidater.prototype.setMessage = function(rule, message) {
         this.messages[rule] = message;
