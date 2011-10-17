@@ -1,5 +1,5 @@
 /*
- * validate.js 1.0.0
+ * validate.js 1.0.1
  * Copyright (c) 2011 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
@@ -60,7 +60,7 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidater = function(formName, fields, callback) {
+    var FormValidator = function(formName, fields, callback) {
         this.callback = callback || defaults.callback;
         this.errors = [];
         this.fields = {};
@@ -108,7 +108,7 @@
      * Sets a custom message for one of the rules
      */
     
-    FormValidater.prototype.setMessage = function(rule, message) {
+    FormValidator.prototype.setMessage = function(rule, message) {
         this.messages[rule] = message;
         
         // return this for chaining
@@ -120,7 +120,7 @@
      * Registers a callback for a custom rule (i.e. callback_username_check)
      */
     
-    FormValidater.prototype.registerCallback = function(name, handler) {
+    FormValidator.prototype.registerCallback = function(name, handler) {
         if (name && typeof name === 'string' && handler && typeof handler === 'function') {
             this.handlers[name] = handler;
         }
@@ -134,7 +134,7 @@
      * Runs the validation when the form is submitted.
      */
     
-    FormValidater.prototype._validateForm = function(event) {
+    FormValidator.prototype._validateForm = function(event) {
         this.errors = [];
     
         for (var key in this.fields) {
@@ -177,7 +177,7 @@
      * Looks at the fields value and evaluates it against the given rules
      */
     
-    FormValidater.prototype._validateField = function(field) {
+    FormValidator.prototype._validateField = function(field) {
         var rules = field.rules.split('|');
         
         /*
@@ -256,7 +256,7 @@
      * Object containing all of the validation hooks
      */
     
-    FormValidater.prototype._hooks = {
+    FormValidator.prototype._hooks = {
         required: function(field) {
             var value = field.value;
             
@@ -340,6 +340,6 @@
         }
     };
 
-    window.FormValidater = FormValidater;
+    window.FormValidator = FormValidator;
 
 })(window, document);
