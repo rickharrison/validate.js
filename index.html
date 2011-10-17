@@ -172,7 +172,7 @@ var validater = new FormValidater('example_form', [{
         
         <p style="clear:both;">All of the default error messages are located at the top of validate.js in a defaults object. If you wish to change a message application wide, you should do so in the source code. If you would like to change a message for a form, use this method on your instance of the <tt>FormValidater</tt> object. When setting a new <b>message</b>, you should pass in %s, which will be replaced with the <tt>display</tt> parameter from the fields array</p>
         
-        <pre class="inline">validater.setMessage('required', 'You must fill out the %s field.');</pre>
+        <pre>validater.setMessage('required', 'You must fill out the %s field.');</pre>
         
         <h4>registerCallback</h4><tt>validater.registerCallback(rule, callback)</tt>
         
@@ -243,14 +243,14 @@ var validater = new FormValidater('example_form', [{
             
             <tr>
                 <td>greater_than</td>
-                <td>returns false if the form element value length is less than the parameter after using parseFloat.</td>
+                <td>returns false if the form element value is less than the parameter after using parseFloat.</td>
                 <td>yes</td>
                 <td>greater_than[10]</td>
             </tr>
             
             <tr>
                 <td>less_than</td>
-                <td>returns false if the form element value length is greater than the parameter after using parseFloat.</td>
+                <td>returns false if the form element value is greater than the parameter after using parseFloat.</td>
                 <td>yes</td>
                 <td>less_than[2]</td>
             </tr>
