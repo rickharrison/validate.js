@@ -77,7 +77,7 @@
         <p>Create the validation object with your desired rules</p>
         
         <pre>
-var validater = new FormValidater('example_form', [{
+var validator = new FormValidator('example_form', [{
     name: 'req',
     display: 'required',    
     rules: 'required'
@@ -104,9 +104,9 @@ var validater = new FormValidater('example_form', [{
     }
 });</pre>
         
-        <h4>FormValidater</h4><tt>new FormValidater(formName, fields, callback)</tt>
+        <h4>FormValidator</h4><tt>new FormValidator(formName, fields, callback)</tt>
         
-        <p style="clear:both;">The <tt>FormValidater</tt> object is attached to the <tt>window</tt> upon loading validate.js. After creation, it will validate the <b>fields</b> on submission of the form named <b>formName</b>.</p>
+        <p style="clear:both;">The <tt>FormValidator</tt> object is attached to the <tt>window</tt> upon loading validate.js. After creation, it will validate the <b>fields</b> on submission of the form named <b>formName</b>.</p>
         
         <p>The <b>formName</b> passed in to <tt>validate</tt> must be the exact value of the <tt>name</tt> attribute of the form</p>
         
@@ -153,9 +153,9 @@ var validater = new FormValidater('example_form', [{
         
         <pre class="inline">rules: 'required|callback_check_email'</pre>
         
-        <p>Then you must call <tt>registerCallback</tt> on your instance of the <tt>FormValidater</tt> with the name of your custom rule and a function taking one parameter. This function will be called with one argument, the value of the field. If the value passes your custom validation, return true, otherwise return false. You can set a message for this rule using the <tt>setMessage</tt> method as described below.</p>
+        <p>Then you must call <tt>registerCallback</tt> on your instance of the <tt>FormValidator</tt> with the name of your custom rule and a function taking one parameter. This function will be called with one argument, the value of the field. If the value passes your custom validation, return true, otherwise return false. You can set a message for this rule using the <tt>setMessage</tt> method as described below.</p>
         
-        <pre class="inline">validater.registerCallback('email_check', function(value) {
+        <pre class="inline">validator.registerCallback('email_check', function(value) {
     if (emailIsUnique(value)) {
         return true;
     }
@@ -168,17 +168,17 @@ var validater = new FormValidater('example_form', [{
     <h3><span>Available Methods</span></h3>
     
     <div class="section">
-        <h4>setMessage</h4><tt>validater.setMessage(rule, message)</tt>
+        <h4>setMessage</h4><tt>validator.setMessage(rule, message)</tt>
         
-        <p style="clear:both;">All of the default error messages are located at the top of validate.js in a defaults object. If you wish to change a message application wide, you should do so in the source code. If you would like to change a message for a form, use this method on your instance of the <tt>FormValidater</tt> object. When setting a new <b>message</b>, you should pass in %s, which will be replaced with the <tt>display</tt> parameter from the fields array</p>
+        <p style="clear:both;">All of the default error messages are located at the top of validate.js in a defaults object. If you wish to change a message application wide, you should do so in the source code. If you would like to change a message for a form, use this method on your instance of the <tt>FormValidator</tt> object. When setting a new <b>message</b>, you should pass in %s, which will be replaced with the <tt>display</tt> parameter from the fields array</p>
         
-        <pre>validater.setMessage('required', 'You must fill out the %s field.');</pre>
+        <pre>validator.setMessage('required', 'You must fill out the %s field.');</pre>
         
-        <h4>registerCallback</h4><tt>validater.registerCallback(rule, callback)</tt>
+        <h4>registerCallback</h4><tt>validator.registerCallback(rule, callback)</tt>
         
         <p style="clear:both;">Used to pair a custom <b>rule</b> in the fields array with a <b>callback</b> to be executed upon validation.</p>
         
-        <pre class="inline">validater.registerCallback('email_check', function(value) {
+        <pre class="inline">validator.registerCallback('email_check', function(value) {
     if (emailIsUnique(value)) {
         return true;
     }
@@ -294,6 +294,12 @@ var validater = new FormValidater('example_form', [{
     
     <h3><span>Release Notes</span></h3>
     
+    <h4>1.0.1 - 10/17/11</h4>
+    
+    <ul style="clear:both;">
+        <li>Renamed FormValidater to FormValidator</li>
+    </ul>
+    
     <h4>1.0.0 - 10/17/11</h4>
     
     <ul style="clear:both;">
@@ -314,7 +320,7 @@ var validater = new FormValidater('example_form', [{
 
 <script type="text/javascript">
 
-new FormValidater('example_form', [{
+new FormValidator('example_form', [{
     name: 'req',
     display: 'required',    
     rules: 'required'
