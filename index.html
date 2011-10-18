@@ -155,14 +155,14 @@ var validator = new FormValidator('example_form', [{
         
         <p>Then you must call <tt>registerCallback</tt> on your instance of the <tt>FormValidator</tt> with the name of your custom rule and a function taking one parameter. This function will be called with one argument, the value of the field. If the value passes your custom validation, return true, otherwise return false. You can set a message for this rule using the <tt>setMessage</tt> method as described below.</p>
         
-        <pre class="inline">validator.registerCallback('email_check', function(value) {
+        <pre class="inline">validator.registerCallback('check_email', function(value) {
     if (emailIsUnique(value)) {
         return true;
     }
     
     return false;
 })
-.setMessage('email_check', 'That email is already taken. Please choose another.');</pre>
+.setMessage('check_email', 'That email is already taken. Please choose another.');</pre>
     </div>
     
     <h3><span>Available Methods</span></h3>
@@ -178,7 +178,7 @@ var validator = new FormValidator('example_form', [{
         
         <p style="clear:both;">Used to pair a custom <b>rule</b> in the fields array with a <b>callback</b> to be executed upon validation.</p>
         
-        <pre class="inline">validator.registerCallback('email_check', function(value) {
+        <pre class="inline">validator.registerCallback('check_email', function(value) {
     if (emailIsUnique(value)) {
         return true;
     }
