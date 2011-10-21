@@ -38,9 +38,9 @@
      */
     
     var ruleRegex = /^(.+)\[(.+)\]$/,
-        numericRegex = /^[0-9]+$/,
-        integerRegex = /^\-?[0-9]+$/,
-        decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
+        numericRegex = /^\d+$/,
+        integerRegex = /^\-?\d+$/,
+        decimalRegex = /^\-?\d*\.?\d+$/,
         emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i,
         alphaRegex = /^[a-z]+$/i,
         alphaNumericRegex = /^[a-z0-9]+$/i,
@@ -259,20 +259,11 @@
     FormValidator.prototype._hooks = {
         required: function(field) {
             var value = field.value;
-            
-            if (field.type === 'checkbox') {
-                return (field.checked === true);
-            }
-        
-            return (value !== null && value !== '');
+            return (field.type === 'checkbox' && field.checked === true) || (value !== null && value !== '');
         },
         
         matches: function(field, matchName) {
-            if (el = this.form[matchName]) {
-                return field.value === el.value;
-            }
-            
-            return false;
+            return field.value === (this.form[matchName] || {}).value;
         },
         
         valid_email: function(field) {
