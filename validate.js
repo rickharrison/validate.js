@@ -271,43 +271,43 @@
         },
         
         min_length: function(field, length) {
-            return numericRegex.test(length) && (field.value.length >= length);
+            return numericRegex.test(length) && field.value.length >= length;
         },
         
         max_length: function(field, length) {
-            return numericRegex.test(length) && (field.value.length <= length);
+            return numericRegex.test(length) && field.value.length <= length;
         },
         
         exact_length: function(field, length) {
-            return numericRegex.test(length) && (field.value.length == length);
+            return numericRegex.test(length) && field.value.length == length;
         },
         
         greater_than: function(field, param) {
-            return decimalRegex.test(field.value) && (parseFloat(field.value, 10) > parseFloat(param, 10));
+            return decimalRegex.test(field.value) && parseFloat(field.value, 10) > parseFloat(param, 10);
         },
         
         less_than: function(field, param) {
-            return decimalRegex.test(field.value) && (parseFloat(field.value, 10) < parseFloat(param, 10));
+            return decimalRegex.test(field.value) && parseFloat(field.value, 10) < parseFloat(param, 10);
         },
         
         alpha: function(field) {
-            return (alphaRegex.test(field.value));
+            return alphaRegex.test(field.value);
         },
         
         alpha_numeric: function(field) {
-            return (alphaNumericRegex.test(field.value));
+            return alphaNumericRegex.test(field.value);
         },
         
         alpha_dash: function(field) {
-            return (alphaDashRegex.test(field.value));
+            return alphaDashRegex.test(field.value);
         },
         
         numeric: function(field) {
-            return (decimalRegex.test(field.value));
+            return decimalRegex.test(field.value);
         },
         
         integer: function(field) {
-            return (integerRegex.test(field.value));
+            return integerRegex.test(field.value);
         }
     };
 
