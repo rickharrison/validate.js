@@ -13,6 +13,7 @@
      */
 
     var defaults = {
+        message: 'An error has occurred with the %s field.',
         messages: {
             required: 'The %s field is required.',
             matches: 'The %s field does not match the %s field.',
@@ -231,19 +232,15 @@
              
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method];
-                
-                if (source) {
-                    var message = source.replace('%s', field.display);
+                var 
+                    source = this.messages[method] || defaults.messages[method] || defaults.message,
+                    message = source.replace('%s', field.display);
                     
-                    if (param) {
-                        message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
-                    }
-                    
-                    this.errors.push(message);
-                } else {
-                    this.errors.push('An error has occurred with the ' + field.display + ' field.');
+                if (param) {
+                    message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                 }
+                
+                this.errors.push(message);
                 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
                 break;
