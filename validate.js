@@ -280,43 +280,23 @@
         },
         
         min_length: function(field, length) {
-            if (!numericRegex.test(length)) {
-                return false;
-            }
-            
-            return (field.value.length >= length);
+            return numericRegex.test(length) && (field.value.length >= length);
         },
         
         max_length: function(field, length) {
-            if (!numericRegex.test(length)) {
-                return false;
-            }
-            
-            return (field.value.length <= length);
+            return numericRegex.test(length) && (field.value.length <= length);
         },
         
         exact_length: function(field, length) {
-            if (!numericRegex.test(length)) {
-                return false;
-            }
-            
-            return (field.value.length == length);
+            return numericRegex.test(length) && (field.value.length == length);
         },
         
         greater_than: function(field, param) {
-            if (!decimalRegex.test(field.value)) {
-                return false;
-            }
-
-            return (parseFloat(field.value) > parseFloat(param));
+            return decimalRegex.test(field.value) && (parseFloat(field.value, 10) > parseFloat(param, 10));
         },
         
         less_than: function(field, param) {
-            if (!decimalRegex.test(field.value)) {
-                return false;
-            }
-            
-            return (parseFloat(field.value) < parseFloat(param));
+            return decimalRegex.test(field.value) && (parseFloat(field.value, 10) < parseFloat(param, 10));
         },
         
         alpha: function(field) {
