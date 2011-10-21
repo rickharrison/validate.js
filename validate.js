@@ -233,11 +233,12 @@
             if (failed) {
                 // Make sure we have a message for this rule
                 var 
-                    source = this.messages[method] || defaults.messages[method] || defaults.message,
-                    message = source.replace('%s', field.display);
+                    message = this.messages[method] || defaults.messages[method] || defaults.message,
+
+                message = message.replace('%s', field.display);
                     
                 if (param) {
-                    message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
+                    message = message.replace('%s', this.fields[param] ? this.fields[param].display : param);
                 }
                 
                 this.errors.push(message);
