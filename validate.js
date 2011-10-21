@@ -13,6 +13,7 @@
      */
 
     var defaults = {
+        message: 'An error has occurred with the %s field.',
         messages: {
             required: 'The %s field is required.',
             matches: 'The %s field does not match the %s field.',
@@ -38,13 +39,13 @@
      */
     
     var ruleRegex = /^(.+)\[(.+)\]$/,
-        numericRegex = /^[0-9]+$/,
-        integerRegex = /^\-?[0-9]+$/,
-        decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-        emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i,
+        numericRegex = /^\d+$/,
+        integerRegex = /^\-?\d+$/,
+        decimalRegex = /^\-?\d*\.?\d+$/,
+        emailRegex = /^[a-z\d._%+-]+@[a-z\d.-]+\.[a-z]{2,6}$/i,
         alphaRegex = /^[a-z]+$/i,
-        alphaNumericRegex = /^[a-z0-9]+$/i,
-        alphaDashRegex = /^[a-z0-9_-]+$/i;
+        alphaNumericRegex = /^[a-z\d]+$/i,
+        alphaDashRegex = /^[\w-]+$/i;
         
     /*
      * The exposed public object to validate a form:
@@ -231,19 +232,16 @@
              
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method];
-                
-                if (source) {
-                    var message = source.replace('%s', field.display);
+                var 
+                    message = this.messages[method] || defaults.messages[method] || defaults.message,
+
+                message = message.replace('%s', field.display);
                     
-                    if (param) {
-                        message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
-                    }
-                    
-                    this.errors.push(message);
-                } else {
-                    this.errors.push('An error has occurred with the ' + field.display + ' field.');
+                if (param) {
+                    message = message.replace('%s', this.fields[param] ? this.fields[param].display : param);
                 }
+                
+                this.errors.push(message);
                 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
                 break;
@@ -259,20 +257,11 @@
     FormValidator.prototype._hooks = {
         required: function(field) {
             var value = field.value;
-            
-            if (field.type === 'checkbox') {
-                return (field.checked === true);
-            }
-        
-            return (value !== null && value !== '');
+            return (field.type === 'checkbox' && field.checked === true) || (value !== null && value !== '');
         },
         
         matches: function(field, matchName) {
-            if (el = this.form[matchName]) {
-                return field.value === el.value;
-            }
-            
-            return false;
+            return field.value === (this.form[matchName] || {}).value;
         },
         
         valid_email: function(field) {
@@ -280,63 +269,43 @@
         },
         
         min_length: function(field, length) {
-            if (!numericRegex.test(length)) {
-                return false;
-            }
-            
-            return (field.value.length >= length);
+            return numericRegex.test(length) && field.value.length >= length;
         },
         
         max_length: function(field, length) {
-            if (!numericRegex.test(length)) {
-                return false;
-            }
-            
-            return (field.value.length <= length);
+            return numericRegex.test(length) && field.value.length <= length;
         },
         
         exact_length: function(field, length) {
-            if (!numericRegex.test(length)) {
-                return false;
-            }
-            
-            return (field.value.length == length);
+            return numericRegex.test(length) && field.value.length == length;
         },
         
         greater_than: function(field, param) {
-            if (!decimalRegex.test(field.value)) {
-                return false;
-            }
-
-            return (parseFloat(field.value) > parseFloat(param));
+            return decimalRegex.test(field.value) && parseFloat(field.value, 10) > parseFloat(param, 10);
         },
         
         less_than: function(field, param) {
-            if (!decimalRegex.test(field.value)) {
-                return false;
-            }
-            
-            return (parseFloat(field.value) < parseFloat(param));
+            return decimalRegex.test(field.value) && parseFloat(field.value, 10) < parseFloat(param, 10);
         },
         
         alpha: function(field) {
-            return (alphaRegex.test(field.value));
+            return alphaRegex.test(field.value);
         },
         
         alpha_numeric: function(field) {
-            return (alphaNumericRegex.test(field.value));
+            return alphaNumericRegex.test(field.value);
         },
         
         alpha_dash: function(field) {
-            return (alphaDashRegex.test(field.value));
+            return alphaDashRegex.test(field.value);
         },
         
         numeric: function(field) {
-            return (decimalRegex.test(field.value));
+            return decimalRegex.test(field.value);
         },
         
         integer: function(field) {
-            return (integerRegex.test(field.value));
+            return integerRegex.test(field.value);
         }
     };
 
