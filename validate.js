@@ -41,10 +41,10 @@
         numericRegex = /^\d+$/,
         integerRegex = /^\-?\d+$/,
         decimalRegex = /^\-?\d*\.?\d+$/,
-        emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i,
+        emailRegex = /^[a-z\d._%+-]+@[a-z\d.-]+\.[a-z]{2,6}$/i,
         alphaRegex = /^[a-z]+$/i,
-        alphaNumericRegex = /^[a-z0-9]+$/i,
-        alphaDashRegex = /^[a-z0-9_-]+$/i;
+        alphaNumericRegex = /^[a-z\d]+$/i,
+        alphaDashRegex = /^[\w-]+$/i;
         
     /*
      * The exposed public object to validate a form:
