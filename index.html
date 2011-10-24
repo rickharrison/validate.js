@@ -52,6 +52,9 @@
         <input name="email" id="email" />
         <input name="minlength" id="minlength" />
         
+        <label for="tos_checkbox">Required checkbox (example: Terms of Service)</label>
+        <input name="tos_checkbox" id="tos_checkbox" type="checkbox" />
+        
         <button class="button gray" type="submit" name="submit">Submit</button>
     </form>
     
@@ -341,6 +344,10 @@ new FormValidator('example_form', [{
     name: 'minlength',
     display: 'min length',
     rules: 'min_length[8]'
+}, {
+    name: 'tos_checkbox',
+    display: 'terms of service',
+    rules: 'required'
 }], function(errors, event) {
     var SELECTOR_ERRORS = $('.error_box'),
         SELECTOR_SUCCESS = $('.success_box');

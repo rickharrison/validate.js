@@ -270,6 +270,10 @@ button {
     width:672px;
 }
 
+input#tos_checkbox {
+    clear:both;
+}
+
 /* links */
 
 a, a:active, a:visited {
