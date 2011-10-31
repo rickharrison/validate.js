@@ -6,6 +6,7 @@
  * http://rickharrison.github.com/validate.js
  */
 
+/*jslint vars: true, unparam: true, nomen: true, sloppy: true, browser: true */
 (function(window, document, undefined) {
     /*
      * If you would like an application-wide config, change these defaults.
@@ -68,7 +69,8 @@
         this.messages = {};
         this.handlers = {};
 
-        for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
+        var i, fieldLength;
+        for (i = 0, fieldLength = fields.length; i < fieldLength; i++) {
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
@@ -87,7 +89,7 @@
                 type: null,
                 value: null,
                 checked: null
-            }
+            };
         }
 
         /*
@@ -99,8 +101,8 @@
                 try {
                     return that._validateForm(event);
                 } catch(e) {}
-            }
-        })(this);
+            };
+        }(this));
     };
 
     /*
@@ -137,7 +139,8 @@
     FormValidator.prototype._validateForm = function(event) {
         this.errors = [];
 
-        for (var key in this.fields) {
+        var key;
+        for (key in this.fields) {
             if (this.fields.hasOwnProperty(key)) {
                 var field = this.fields[key] || {},
                     element = this.form[field.name];
@@ -192,7 +195,8 @@
          * Run through the rules and execute the validation methods as needed
          */
 
-        for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
+        var i, ruleLength;
+        for (i = 0, ruleLength = rules.length; i < ruleLength; i++) {
             var method = rules[i],
                 param = null,
                 failed = false;
@@ -201,7 +205,8 @@
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
 
-            if (parts = ruleRegex.exec(method)) {
+            var parts = ruleRegex.exec(method);
+            if (parts) {
                 method = parts[1];
                 param = parts[2];
             }
@@ -268,7 +273,8 @@
         },
 
         matches: function(field, matchName) {
-            if (el = this.form[matchName]) {
+            var el = this.form[matchName];
+            if (el) {
                 return field.value === el.value;
             }
 
@@ -300,7 +306,7 @@
                 return false;
             }
 
-            return (field.value.length == length);
+            return (field.value.length === length);
         },
 
         greater_than: function(field, param) {
@@ -342,4 +348,4 @@
 
     window.FormValidator = FormValidator;
 
-})(window, document);
+}(window, document));
