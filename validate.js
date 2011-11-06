@@ -122,10 +122,19 @@
     
     FormValidator.prototype.registerCallback = function(name, handler, async) {
         if (name && typeof name === 'string' && handler && typeof handler === 'function') {
+            var self = this;
+        
             this.handlers[name] = {
-                callback: handler,
+                handler: handler,
                 async: (async === true) ? true : false,
-                failed: false
+                finished: false,
+                result: true,
+                callback: function(result) {
+                    var handler = self.handlers[name];
+                    
+                    handler.finished = true;
+                    handler.result = (result === false) ? false : true;
+                }
             };
         }
         
@@ -222,8 +231,8 @@
                 // Custom method. Execute the handler if it was registered
                 method = method.substring(9, method.length);
                 
-                if (typeof this.handlers[method].callback === 'function') {
-                    if (this.handlers[method].callback.apply(this, [field.value]) === false) {
+                if (typeof this.handlers[method].handler === 'function') {
+                    if (this.handlers[method].handler.apply(this, [field.value, this.handlers[method].callback]) === false) {
                         failed = true;
                     }
                 }
