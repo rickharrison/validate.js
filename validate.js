@@ -120,9 +120,13 @@
      * Registers a callback for a custom rule (i.e. callback_username_check)
      */
     
-    FormValidator.prototype.registerCallback = function(name, handler) {
+    FormValidator.prototype.registerCallback = function(name, handler, async) {
         if (name && typeof name === 'string' && handler && typeof handler === 'function') {
-            this.handlers[name] = handler;
+            this.handlers[name] = {
+                callback: handler,
+                async: (async === true) ? true : false,
+                failed: false
+            };
         }
         
         // return this for chaining
@@ -136,7 +140,7 @@
     
     FormValidator.prototype._validateForm = function(event) {
         this.errors = [];
-    
+        
         for (var key in this.fields) {
             if (this.fields.hasOwnProperty(key)) {
                 var field = this.fields[key] || {},
@@ -218,8 +222,8 @@
                 // Custom method. Execute the handler if it was registered
                 method = method.substring(9, method.length);
                 
-                if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value]) === false) {
+                if (typeof this.handlers[method].callback === 'function') {
+                    if (this.handlers[method].callback.apply(this, [field.value]) === false) {
                         failed = true;
                     }
                 }
