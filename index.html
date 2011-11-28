@@ -227,7 +227,14 @@ var validator = new FormValidator('example_form', [{
                 <td>no</td>
                 <td></td>
             </tr>
-            
+
+            <tr>
+                <td>valid_emails</td>
+                <td>returns false if any value provided in a comma separated list is not a valid email.</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+
             <tr>
                 <td>min_length</td>
                 <td>returns false if the form element value is shorter than the parameter.</td>
@@ -294,6 +301,41 @@ var validator = new FormValidator('example_form', [{
             <tr>
                 <td>integer</td>
                 <td>returns false if the form element contains anything other than an integer.</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>decimal</td>
+                <td>returns false if the form element is not exactly the parameter value.</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>is_natural</td>
+                <td>returns false if the form element contains anything other than a natural number: 0, 1, 2, 3, etc.</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>is_natural_no_zero</td>
+                <td>returns false if the form element contains anything other than a natural number, but not zero: 1, 2, 3, etc.</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>valid_ip</td>
+                <td>returns false if the supplied IP is not valid.</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>valid_base64</td>
+                <td>returns false if the supplied string contains anything other than valid Base64 characters.</td>
                 <td>no</td>
                 <td></td>
             </tr>
