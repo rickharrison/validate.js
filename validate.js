@@ -54,7 +54,7 @@
         naturalRegex = /^[0-9]+$/i,
         naturalNoZeroRegex = /^[1-9][0-9]*$/i,
         ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
-        base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/i;
+        base64Regex = /[^a-zA-Z0-9\/\+=]/i;
 
     /*
      * The exposed public object to validate a form:
