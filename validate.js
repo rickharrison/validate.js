@@ -87,7 +87,7 @@
                 type: null,
                 value: null,
                 checked: null
-            }
+            };
         }
         
         /*
@@ -300,7 +300,7 @@
                 return false;
             }
             
-            return (field.value.length == length);
+            return (field.value.length === length);
         },
         
         greater_than: function(field, param) {
