@@ -128,6 +128,22 @@
         // return this for chaining
         return this;
     };
+
+    /*
+     * @public
+     * Run validation against one field at a time
+     */
+
+    FormValidator.prototype.validateField = function(element) {
+        var field = this.fields[element.name] || {};
+        this.errors.length = 0;
+        if (field.hasOwnProperty('name')) {
+            field.type = element.type;
+            field.value = element.value;
+            field.checked = element.checked;
+            this._validateField(field);
+        }
+    }
     
     /*
      * @private
