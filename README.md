@@ -14,7 +14,7 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
 
 ## How to use
 
-    var validater = new FormValidater('example_form', [{
+    var validator = new FormValidator('example_form', [{
         name: 'req',
         display: 'required',    
         rules: 'required'
