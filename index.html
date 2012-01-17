@@ -82,7 +82,7 @@
         
         <pre>&lt;script type=&quot;text/javascript&quot; src=&quot;validate.min.js&quot;&gt;&lt;/script&gt;</pre>
         
-        <p>Create the validation object with your desired rules</p>
+        <p>Create the validation object with your desired rules. This needs to be in a <tt>&lt;script&gt;</tt> tag located just before your closing <tt>&lt;/body&gt;</tt> tag. The reason for this being that the DOM needs to have your form loaded before you can attach your rules.</p>
         
         <pre>
 var validator = new FormValidator('example_form', [{
