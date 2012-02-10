@@ -306,7 +306,7 @@
                 return false;
             }
 
-            return (field.value.length >= length);
+            return (field.value.length >= parseInt(length, 10));
         },
 
         max_length: function(field, length) {
@@ -314,7 +314,7 @@
                 return false;
             }
 
-            return (field.value.length <= length);
+            return (field.value.length <= parseInt(length, 10));
         },
 
         exact_length: function(field, length) {
@@ -322,7 +322,7 @@
                 return false;
             }
             
-            return (field.value.length === length);
+            return (field.value.length === parseInt(length, 10));
         },
 
         greater_than: function(field, param) {
