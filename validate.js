@@ -159,6 +159,7 @@
 
     FormValidator.prototype._validateForm = function(event) {
         this.errors = [];
+        
         for (var key in this.fields) {
             if (this.fields.hasOwnProperty(key)) {
                 var field = this.fields[key] || {},
@@ -281,6 +282,7 @@
 
         
         var method = rule,
+            param = null,
             parts = null,
             source = this.messages[method] || defaults.messages[method],
             message = null;
