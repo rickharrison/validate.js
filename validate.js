@@ -127,6 +127,11 @@
         // return this for chaining
         return this;
     };
+
+    /*
+     * @ public
+     * Sets a custom error class that is assigned to the form fields that have errors
+     */
     FormValidator.prototype.setErrorClass = function(className) {
         this.errorClass = className;
 
