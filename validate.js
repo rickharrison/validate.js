@@ -211,7 +211,7 @@
 
             if (!ruleValid) {
                 
-                validatorMessage = this._getValidatorMessage(field);
+                validatorMessage = this._getValidatorMessage(field, rules[i]);
                 this.errors.push(validatorMessage);
                 this._highlightField(field);
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
@@ -268,7 +268,7 @@
     FormValidator.prototype._getValidatorMessage = function(field,rule) {
          // Make sure we have a message for this rule
 
-
+        
         var method = rule,
             parts = null,
             source = this.messages[method] || defaults.messages[method],
