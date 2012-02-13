@@ -265,7 +265,7 @@
      * @private
      * returns the validator message for a given field
      */
-    FormValidator.prototype._getValidatorMessage = function(field,rule) {
+    FormValidator.prototype._getValidatorMessage = function(field, rule) {
          // Make sure we have a message for this rule
 
         
@@ -303,7 +303,7 @@
      */
     FormValidator.prototype._highlightField = function(field) {
         var element = this.form[field.name],
-        elClasses = [];
+            elClasses = [];
 
         if(element.className.trim() !== '') {
             elClasses = element.className.split(' ');
@@ -321,8 +321,8 @@
      */
     FormValidator.prototype._clearHightlightFromField = function(field) {
         var element = this.form[field.name],
-        elClasses = [],
-        newClasses = [];
+            elClasses = [],
+            newClasses = [];
 
         if(element.className.trim() !== '') {
             elClasses = element.className.split(' ');
