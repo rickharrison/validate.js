@@ -10,6 +10,7 @@
     /*
      * If you would like an application-wide config, change these defaults.
      * Otherwise, use the setMessage() function to configure form specific messages.
+     * To configure the errorClass to something other than the default use setErrorClass()
      */
 
     var defaults = {
@@ -126,7 +127,12 @@
         // return this for chaining
         return this;
     };
+    FormValidator.prototype.setErrorClass = function(className) {
+        this.errorClass = className;
 
+        // return this for chaining
+        return this;  
+    };
     /*
      * @public
      * Registers a callback for a custom rule (i.e. callback_username_check)
