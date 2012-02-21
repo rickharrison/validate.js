@@ -310,10 +310,10 @@
         }  
 
         errorObj = {
-                    'error' : message,
-                    'id'    : field.id,
-                    'name'  : field.name,
-                    'type'  : field.type,
+                    error : message,
+                    id    : field.id,
+                    name  : field.name,
+                    type  : field.type
                 };
 
         return errorObj;
