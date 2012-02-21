@@ -169,6 +169,7 @@
                     field.type = element.type;
                     field.value = element.value;
                     field.checked = element.checked;
+                    field.id = element.id;
                 }
 
                 /*
@@ -284,6 +285,7 @@
         var method = rule,
             param = null,
             parts = null,
+            errorObj = null;
             source = this.messages[method] || defaults.messages[method],
             message = null;
         
@@ -307,7 +309,14 @@
             message = 'An error has occurred with the ' + field.display + ' field.';
         }  
 
-        return message;
+        errorObj = {
+                    'error' : message,
+                    'id'    : field.id,
+                    'name'  : field.name,
+                    'type'  : field.type,
+                };
+
+        return errorObj;
     };
 
     /*
