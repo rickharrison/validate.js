@@ -156,6 +156,7 @@
                     field.type = element.type;
                     field.value = element.value;
                     field.checked = element.checked;
+                    field.id = element.id;
                 }
 
                 /*
@@ -242,18 +243,22 @@
             if (failed) {
                 // Make sure we have a message for this rule
                 var source = this.messages[method] || defaults.messages[method];
+                var message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
-                    var message = source.replace('%s', field.display);
+                    message = source.replace('%s', field.display);
 
                     if (param) {
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                     }
-
-                    this.errors.push(message);
-                } else {
-                    this.errors.push('An error has occurred with the ' + field.display + ' field.');
                 }
+
+                this.errors.push({
+                	'error'	: message,
+                	'id'	: field.id,
+                	'name'	: field.name,
+                	'type'	: field.type,
+                });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
                 break;
