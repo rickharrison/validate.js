@@ -285,7 +285,7 @@
         var method = rule,
             param = null,
             parts = null,
-            errorObj = null;
+            errorObj = null,
             source = this.messages[method] || defaults.messages[method],
             message = null;
         
