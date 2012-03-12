@@ -231,6 +231,8 @@
                 break;
             }
         }
+
+        return ruleValid;
     };
 
     /*
@@ -286,7 +288,7 @@
             param = null,
             parts = null,
             errorObj = null,
-            source = this.messages[method] || defaults.messages[method],
+            source = null,
             message = null;
         
         /*
@@ -297,6 +299,8 @@
                 param = parts[2];
         }
 
+        source = this.messages[method] || defaults.messages[method];
+        
         if (source) {
             message = source.replace('%s', field.display);
 
