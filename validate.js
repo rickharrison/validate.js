@@ -219,19 +219,15 @@
             /*
              * If the hook is defined, run it to find any validation errors
              */
-
             if (typeof this._hooks[method] === 'function') {
                 if (!this._hooks[method].apply(this, [field, param])) {
                     failed = true;
                 }
-            } else if (method.substring(0, 9) === 'callback_') {
-                // Custom method. Execute the handler if it was registered
-                method = method.substring(9, method.length);
 
-                if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value]) === false) {
-                        failed = true;
-                    }
+            // Custom method. Execute the handler if it was registered            
+            } else if (typeof this.handlers[method] === 'function') {
+                if (this.handlers[method].apply(this, [field.value]) === false) {
+                    failed = true;
                 }
             }
 
