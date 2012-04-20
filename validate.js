@@ -20,6 +20,7 @@
             valid_emails: 'The %s field must contain all valid email addresses.',
             min_length: 'The %s field must be at least %s characters in length.',
             max_length: 'The %s field must not exceed %s characters in length.',
+            between: 'The %s field length must be between %s and %s.',
             exact_length: 'The %s field must be exactly %s characters in length.',
             greater_than: 'The %s field must contain a number greater than %s.',
             less_than: 'The %s field must contain a number less than %s.',
@@ -43,7 +44,7 @@
      * Define the regular expressions that will be used
      */
 
-    var ruleRegex = /^(.+)\[(.+)\]$/,
+    var ruleRegex = /^(.+)\((.+)\)$/,
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
@@ -213,7 +214,7 @@
 
             if (parts = ruleRegex.exec(method)) {
                 method = parts[1];
-                param = parts[2];
+                param = parts[2].split(",");
             }
 
             /*
@@ -221,7 +222,7 @@
              */
 
             if (typeof this._hooks[method] === 'function') {
-                if (!this._hooks[method].apply(this, [field, param])) {
+                if (!this._hooks[method].apply(this, [field].concat(param))) {
                     failed = true;
                 }
             } else if (method.substring(0, 9) === 'callback_') {
@@ -245,9 +246,9 @@
 
                 if (source) {
                     var message = source.replace('%s', field.display);
-
-                    if (param) {
-                        message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
+                    
+                    for (key in param) {
+                        message = message.replace('%s', (this.fields[param[key]]) ? this.fields[param[key]].display : param[key]);
                     }
 
                     this.errors.push(message);
@@ -315,6 +316,14 @@
             }
 
             return (field.value.length <= parseInt(length, 10));
+        },
+        
+        between: function(field, len1, len2) {
+            if (!numericRegex.test(len1) || !numericRegex.test(len2)) {
+                return false;
+            }
+            
+            return (field.value.length >= len1 && field.value.length <= len2);
         },
 
         exact_length: function(field, length) {
