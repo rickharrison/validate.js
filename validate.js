@@ -10,6 +10,7 @@
     /*
      * If you would like an application-wide config, change these defaults.
      * Otherwise, use the setMessage() function to configure form specific messages.
+     * To configure the errorClass to something other than the default use setErrorClass()
      */
 
     var defaults = {
@@ -34,6 +35,7 @@
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.'
         },
+        errorClass: 'error',
         callback: function(errors) {
 
         }
@@ -73,6 +75,7 @@
     var FormValidator = function(formName, fields, callback) {
         this.callback = callback || defaults.callback;
         this.errors = [];
+        this.errorClass = defaults.errorClass;
         this.fields = {};
         this.form = document.forms[formName] || {};
         this.messages = {};
@@ -126,6 +129,16 @@
     };
 
     /*
+     * @ public
+     * Sets a custom error class that is assigned to the form fields that have errors
+     */
+    FormValidator.prototype.setErrorClass = function(className) {
+        this.errorClass = className;
+
+        // return this for chaining
+        return this;  
+    };
+    /*
      * @public
      * Registers a callback for a custom rule (i.e. callback_username_check)
      */
@@ -146,7 +159,7 @@
 
     FormValidator.prototype._validateForm = function(event) {
         this.errors = [];
-
+        
         for (var key in this.fields) {
             if (this.fields.hasOwnProperty(key)) {
                 var field = this.fields[key] || {},
@@ -156,12 +169,13 @@
                     field.type = element.type;
                     field.value = element.value;
                     field.checked = element.checked;
+                    field.id = element.id;
                 }
 
                 /*
                  * Run through the rules for each field.
                  */
-
+                this._clearHightlightFromField(field);
                 this._validateField(field);
             }
         }
@@ -185,10 +199,12 @@
     /*
      * @private
      * Looks at the fields value and evaluates it against the given rules
+     * @returns true if valid, false if invalid
      */
-
     FormValidator.prototype._validateField = function(field) {
-        var rules = field.rules.split('|');
+        var rules = field.rules.split('|'),
+            ruleValid = false,
+            validatorMessage = null;
 
         /*
          * If the value is null and not required, we don't need to run through validation
@@ -203,62 +219,148 @@
          */
 
         for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
-            var method = rules[i],
-                param = null,
-                failed = false;
+            
+            ruleValid = this._validateRule(field,rules[i]);
 
-            /*
-             * If the rule has a parameter (i.e. matches[param]) split it out
-             */
-
-            if (parts = ruleRegex.exec(method)) {
-                method = parts[1];
-                param = parts[2];
-            }
-
-            /*
-             * If the hook is defined, run it to find any validation errors
-             */
-
-            if (typeof this._hooks[method] === 'function') {
-                if (!this._hooks[method].apply(this, [field, param])) {
-                    failed = true;
-                }
-            } else if (method.substring(0, 9) === 'callback_') {
-                // Custom method. Execute the handler if it was registered
-                method = method.substring(9, method.length);
-
-                if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value]) === false) {
-                        failed = true;
-                    }
-                }
-            }
-
-            /*
-             * If the hook failed, add a message to the errors array
-             */
-
-            if (failed) {
-                // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method];
-
-                if (source) {
-                    var message = source.replace('%s', field.display);
-
-                    if (param) {
-                        message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
-                    }
-
-                    this.errors.push(message);
-                } else {
-                    this.errors.push('An error has occurred with the ' + field.display + ' field.');
-                }
-
+            if (!ruleValid) {
+                
+                validatorMessage = this._getValidatorMessage(field, rules[i]);
+                this.errors.push(validatorMessage);
+                this._highlightField(field);
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
                 break;
             }
         }
+
+        return ruleValid;
+    };
+
+    /*
+     * @private
+     * Given a rule and a field validates it 
+     * @returns true if valid and false if invalid
+     */
+    FormValidator.prototype._validateRule = function(field, rule) {
+        var method = rule,
+            param = null,
+            parts = null,
+            failed = false;
+
+        /*
+         * If the rule has a parameter (i.e. matches[param]) split it out
+         */
+
+        if (parts = ruleRegex.exec(method)) {
+            method = parts[1];
+            param = parts[2];
+        }
+
+        /*
+         * If the hook is defined, run it to find any validation errors
+         */
+
+        if (typeof this._hooks[method] === 'function') {
+            if (!this._hooks[method].apply(this, [field, param])) {
+                failed = true;
+            }
+        } else if (method.substring(0, 9) === 'callback_') {
+            // Custom method. Execute the handler if it was registered
+            method = method.substring(9, method.length);
+
+            if (typeof this.handlers[method] === 'function') {
+                if (this.handlers[method].apply(this, [field.value]) === false) {
+                    failed = true;
+                }
+            }
+        }
+        return !failed;
+    };
+
+    /*
+     * @private
+     * returns the validator message for a given field
+     */
+    FormValidator.prototype._getValidatorMessage = function(field, rule) {
+         // Make sure we have a message for this rule
+
+        
+        var method = rule,
+            param = null,
+            parts = null,
+            errorObj = null,
+            source = null,
+            message = null;
+        
+        /*
+         * If the rule has a parameter (i.e. matches[param]) split it out
+         */
+        if (parts = ruleRegex.exec(method)) {
+                method = parts[1];
+                param = parts[2];
+        }
+
+        source = this.messages[method] || defaults.messages[method];
+        
+        if (source) {
+            message = source.replace('%s', field.display);
+
+            if (param) {
+                message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
+            }
+
+           
+        } else {
+            message = 'An error has occurred with the ' + field.display + ' field.';
+        }  
+
+        errorObj = {
+                    error : message,
+                    id    : field.id,
+                    name  : field.name,
+                    type  : field.type
+                };
+
+        return errorObj;
+    };
+
+    /*
+     * @private
+     * highlight the passed in field with the error class
+     */
+    FormValidator.prototype._highlightField = function(field) {
+        var element = this.form[field.name],
+            elClasses = [];
+
+        if(element.className.trim() !== '') {
+            elClasses = element.className.split(' ');
+        }
+        
+        elClasses.push(this.errorClass);
+        element.className = elClasses.join(' ');
+         
+    };
+    
+
+    /*
+     * @private
+     * clears a highlight from a field
+     */
+    FormValidator.prototype._clearHightlightFromField = function(field) {
+        var element = this.form[field.name],
+            elClasses = [],
+            newClasses = [];
+
+        if(element.className.trim() !== '') {
+            elClasses = element.className.split(' ');
+
+            for(var i = 0 ; i < elClasses.length; i++) {
+                 if(elClasses[i] !== this.errorClass) {
+                     newClasses.push(elClasses[i]);
+                 }
+            }
+        }
+        
+        element.className = newClasses.join(' ');
     };
 
     /*
