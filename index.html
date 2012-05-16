@@ -106,7 +106,7 @@ var validator = new FormValidator('example_form', [{
     name: 'minlength',
     display: 'min length',
     rules: 'min_length[8]'
-}], function(errors, events) {
+}], function(errors, event) {
     if (errors.length > 0) {
         // Show the errors
     }
@@ -144,7 +144,7 @@ var validator = new FormValidator('example_form', [{
             <li>event - If the browser supports it, the onsubmit event is passed in.</li>
         </ul>
         
-        <pre>function(errors, events) {
+        <pre>function(errors, event) {
     if (errors.length > 0) {
         el.innerHTML = errors.join('&lt;br /&gt;');
     }       
