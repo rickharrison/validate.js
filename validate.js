@@ -1,5 +1,5 @@
 /*
- * validate.js 1.0.2
+ * validate.js 1.1
  * Copyright (c) 2011 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
@@ -94,6 +94,7 @@
                 name: field.name,
                 display: field.display || field.name,
                 rules: field.rules,
+                id: null,
                 type: null,
                 value: null,
                 checked: null
@@ -153,6 +154,7 @@
                     element = this.form[field.name];
 
                 if (element && element !== undefined) {
+                    field.id = element.id;
                     field.type = element.type;
                     field.value = element.value;
                     field.checked = element.checked;
@@ -241,19 +243,22 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method];
+                var source = this.messages[method] || defaults.messages[method],
+                    message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
-                    var message = source.replace('%s', field.display);
+                    message = source.replace('%s', field.display);
 
                     if (param) {
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                     }
-
-                    this.errors.push(message);
-                } else {
-                    this.errors.push('An error has occurred with the ' + field.display + ' field.');
                 }
+                
+                this.errors.push({
+                    id: field.id,
+                    name: field.name,
+                    message: message 
+                });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
                 break;
@@ -306,7 +311,7 @@
                 return false;
             }
 
-            return (field.value.length >= length);
+            return (field.value.length >= parseInt(length, 10));
         },
 
         max_length: function(field, length) {
@@ -314,7 +319,7 @@
                 return false;
             }
 
-            return (field.value.length <= length);
+            return (field.value.length <= parseInt(length, 10));
         },
 
         exact_length: function(field, length) {
@@ -322,7 +327,7 @@
                 return false;
             }
             
-            return (field.value.length === length);
+            return (field.value.length === parseInt(length, 10));
         },
 
         greater_than: function(field, param) {
