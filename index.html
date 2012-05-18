@@ -140,13 +140,25 @@ var validator = new FormValidator('example_form', [{
         <p>A <b>callback</b> will always be executed after validation. Your <b>callback</b> should be ready to accept two parameters.</p>
         
         <ul class="inline">
-            <li>errors - An array of errors from the validation object. If the length > 0, the form failed validation</li>
+            <li>
+                <p>errors - An array of errors from the validation object. If the length > 0, the form failed validation</p>
+                <p>This array will contain javascript objects with up to three properties:<br />
+                - id: The id attribute of the form element<br />
+                - name: The name attribute of the form element<br />
+                - message: The error message to display<br /></p>
+            </li>
             <li>event - If the browser supports it, the onsubmit event is passed in.</li>
         </ul>
         
         <pre>function(errors, event) {
     if (errors.length > 0) {
-        el.innerHTML = errors.join('&lt;br /&gt;');
+        var errorString = '';
+        
+        for (var i = 0, errorLength = errors.length; i &lt; errorLength; i++) {
+            errorString += errors[i].message + '&lt;br /&gt;';
+        }
+        
+        el.innerHTML = errorString;
     }       
 }        
         </pre>
@@ -344,6 +356,18 @@ var validator = new FormValidator('example_form', [{
     
     <h3><span>Release Notes</span></h3>
     
+    <h4>1.1 - 05/17/12</h4>
+    
+    <ul style="clear:both;">
+        <li>
+            <p>Changed the format of the error parameter in the validation callback.</p>
+            <p>It now contains javascript objects containing up to three parameters:<br />
+            - id: The id attribute of the form element<br />
+            - name: The name attribute of the form element<br />
+            - message: The error message to display<br /></p>
+        </li>
+    </ul>
+    
     <h4>1.0.2 - 12/19/11</h4>
     
     <ul style="clear:both;">
@@ -408,7 +432,10 @@ new FormValidator('example_form', [{
         
     if (errors.length > 0) {
         SELECTOR_ERRORS.empty();
-        SELECTOR_ERRORS.append(errors.join('<br />'));
+        
+        for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+            SELECTOR_ERRORS.append(errors[i].message + '<br />');
+        }
         
         SELECTOR_SUCCESS.css({ display: 'none' });
         SELECTOR_ERRORS.fadeIn(200);
