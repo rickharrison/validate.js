@@ -112,6 +112,22 @@
                 } catch(e) {}
             }
         })(this);
+    },
+
+    attributeValue = function (element, attributeName) {
+        var i;
+
+        if ((element.length > 0) && (element[0].type === "radio")) {
+            for (i = 0; i < element.length; i++) {
+                if (element[i].checked) {
+                    return element[i][attributeName];
+                }
+            }
+
+            return;
+        }
+
+        return element[attributeName];
     };
 
     /*
@@ -154,10 +170,10 @@
                     element = this.form[field.name];
 
                 if (element && element !== undefined) {
-                    field.id = element.id;
-                    field.type = element.type;
-                    field.value = element.value;
-                    field.checked = element.checked;
+                    field.id = attributeValue(element, "id");
+                    field.type = (element.length > 0) ? element[0].type : element.type;
+                    field.value = attributeValue(element, "value");
+                    field.checked = attributeValue(element, "checked");
                 }
 
                 /*
@@ -276,7 +292,7 @@
         required: function(field) {
             var value = field.value;
 
-            if (field.type === 'checkbox') {
+            if ((field.type === 'checkbox') || (field.type === 'radio')) {
                 return (field.checked === true);
             }
 
