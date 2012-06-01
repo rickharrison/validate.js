@@ -207,13 +207,14 @@
         for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
             var method = rules[i],
                 param = null,
-                failed = false;
+                failed = false,
+                parts = ruleRegex.exec(method);
 
             /*
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
 
-            if (parts = ruleRegex.exec(method)) {
+            if (parts) {
                 method = parts[1];
                 param = parts[2];
             }
@@ -253,11 +254,11 @@
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                     }
                 }
-                
+
                 this.errors.push({
                     id: field.id,
                     name: field.name,
-                    message: message 
+                    message: message
                 });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
@@ -283,7 +284,9 @@
         },
 
         matches: function(field, matchName) {
-            if (el = this.form[matchName]) {
+            var el = this.form[matchName];
+
+            if (el) {
                 return field.value === el.value;
             }
 
@@ -296,13 +299,13 @@
 
         valid_emails: function(field) {
             var result = field.value.split(",");
-            
+
             for (var i = 0; i < result.length; i++) {
                 if (!emailRegex.test(result[i])) {
                     return false;
                 }
             }
-            
+
             return true;
         },
 
@@ -326,7 +329,7 @@
             if (!numericRegex.test(length)) {
                 return false;
             }
-            
+
             return (field.value.length === parseInt(length, 10));
         },
 
