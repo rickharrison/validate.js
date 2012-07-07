@@ -12,6 +12,23 @@
      * Otherwise, use the setMessage() function to configure form specific messages.
      */
 
+    var bindEvent = function(elem ,evt,cb) {
+        //see if the addEventListener function exists on the element
+        if ( elem.addEventListener ) {
+            elem.addEventListener(evt,cb,false);
+        //if addEventListener is not present, see if this is an IE browser
+        } else if ( elem.attachEvent ) {
+            //prefix the event type with "on"
+            elem.attachEvent('on' + evt, function(){
+                /* use call to simulate addEventListener
+                 * This will make sure the callback gets the element for "this"
+                 * and will ensure the function's first argument is the event object
+                 */
+                 cb.call(event.srcElement,event);
+            });
+        }
+    };
+
     var defaults = {
         messages: {
             required: 'The %s field is required.',
@@ -90,15 +107,28 @@
              * Build the master fields array that has all the information needed to validate
              */
 
-            this.fields[field.name] = {
+            field = {
                 name: field.name,
                 display: field.display || field.name,
                 rules: field.rules,
                 id: null,
                 type: null,
                 value: null,
-                checked: null
+                checked: null,
+                cb: field.cb || null
             };
+
+            this.fields[field.name] = field
+
+            element = this.form[field.name];
+
+            if (element && element !== undefined && field.cb) {
+                (function(field,element){
+                   bindEvent(element,'change',function(e){
+                        field.cb(element.value,e)
+                    });
+                })(field,element);
+            }
         }
 
         /*
@@ -253,11 +283,11 @@
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                     }
                 }
-                
+
                 this.errors.push({
                     id: field.id,
                     name: field.name,
-                    message: message 
+                    message: message
                 });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
@@ -296,13 +326,13 @@
 
         valid_emails: function(field) {
             var result = field.value.split(",");
-            
+
             for (var i = 0; i < result.length; i++) {
                 if (!emailRegex.test(result[i])) {
                     return false;
                 }
             }
-            
+
             return true;
         },
 
@@ -326,7 +356,7 @@
             if (!numericRegex.test(length)) {
                 return false;
             }
-            
+
             return (field.value.length === parseInt(length, 10));
         },
 
