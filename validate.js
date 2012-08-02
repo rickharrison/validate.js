@@ -43,7 +43,7 @@
      * Define the regular expressions that will be used
      */
 
-    var ruleRegex = /^(.+)\[(.+)\]$/,
+    var ruleRegex = /^(.+?)\[(.+)\]$/,
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
