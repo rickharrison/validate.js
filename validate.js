@@ -112,6 +112,22 @@
                 } catch(e) {}
             }
         })(this);
+    },
+
+    attributeValue = function (element, attributeName) {
+        var i;
+
+        if ((element.length > 0) && (element[0].type === "radio")) {
+            for (i = 0; i < element.length; i++) {
+                if (element[i].checked) {
+                    return element[i][attributeName];
+                }
+            }
+
+            return;
+        }
+
+        return element[attributeName];
     };
 
     /*
@@ -154,10 +170,10 @@
                     element = this.form[field.name];
 
                 if (element && element !== undefined) {
-                    field.id = element.id;
-                    field.type = element.type;
-                    field.value = element.value;
-                    field.checked = element.checked;
+                    field.id = attributeValue(element, "id");
+                    field.type = (element.length > 0) ? element[0].type : element.type;
+                    field.value = attributeValue(element, "value");
+                    field.checked = attributeValue(element, "checked");
                 }
 
                 /*
@@ -207,13 +223,14 @@
         for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
             var method = rules[i],
                 param = null,
-                failed = false;
+                failed = false,
+                parts = ruleRegex.exec(method);
 
             /*
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
 
-            if (parts = ruleRegex.exec(method)) {
+            if (parts) {
                 method = parts[1];
                 param = parts[2];
             }
@@ -253,11 +270,11 @@
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                     }
                 }
-                
+
                 this.errors.push({
                     id: field.id,
                     name: field.name,
-                    message: message 
+                    message: message
                 });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
@@ -275,7 +292,7 @@
         required: function(field) {
             var value = field.value;
 
-            if (field.type === 'checkbox') {
+            if ((field.type === 'checkbox') || (field.type === 'radio')) {
                 return (field.checked === true);
             }
 
@@ -283,7 +300,9 @@
         },
 
         matches: function(field, matchName) {
-            if (el = this.form[matchName]) {
+            var el = this.form[matchName];
+
+            if (el) {
                 return field.value === el.value;
             }
 
@@ -296,13 +315,13 @@
 
         valid_emails: function(field) {
             var result = field.value.split(",");
-            
+
             for (var i = 0; i < result.length; i++) {
                 if (!emailRegex.test(result[i])) {
                     return false;
                 }
             }
-            
+
             return true;
         },
 
@@ -326,7 +345,7 @@
             if (!numericRegex.test(length)) {
                 return false;
             }
-            
+
             return (field.value.length === parseInt(length, 10));
         },
 
