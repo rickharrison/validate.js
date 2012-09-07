@@ -387,6 +387,7 @@
             return (base64Regex.test(field.value));
         },
         is_file_type: function(field,type) {
+            //type is a string of comma separated values eg: is_file_type[zip] or is_file_type[jpeg,jpg,png]
             var ext = field.value.substr( (field.value.lastIndexOf('.') +1) ),
                 typeArray = type.split(','),
                 inArray = false,
