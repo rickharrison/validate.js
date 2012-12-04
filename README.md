@@ -47,4 +47,4 @@ You can view everything at http://rickharrison.github.com/validate.js
 
 ## Plugins
 
-jQuery: https://github.com/mahil/validate_helper
+jQuery: https://github.com/magizh/validate_helper
