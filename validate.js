@@ -43,7 +43,7 @@
      * Define the regular expressions that will be used
      */
 
-    var ruleRegex = /^(.+?)\[(.+)\]$/,
+    var ruleRegex = /^(.+)\[(.+)\]$/,
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
@@ -257,7 +257,8 @@
                 this.errors.push({
                     id: field.id,
                     name: field.name,
-                    message: message 
+                    message: message,
+                    rule: method
                 });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
