@@ -257,7 +257,8 @@
                 this.errors.push({
                     id: field.id,
                     name: field.name,
-                    message: message 
+                    message: message,
+                    rule: method
                 });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
