@@ -33,7 +33,8 @@
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
-            valid_credit_card: 'The %s field must contain a vaild credit card number'
+            valid_credit_card: 'The %s field must contain a vaild credit card number',
+            is_file_type: 'The %s field must contain only %s files.'
         },
         callback: function(errors) {
 
@@ -255,7 +256,7 @@
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
                     }
                 }
-                
+
                 this.errors.push({
                     id: field.id,
                     name: field.name,
@@ -299,13 +300,13 @@
 
         valid_emails: function(field) {
             var result = field.value.split(",");
-            
+
             for (var i = 0; i < result.length; i++) {
                 if (!emailRegex.test(result[i])) {
                     return false;
                 }
             }
-            
+
             return true;
         },
 
@@ -329,7 +330,7 @@
             if (!numericRegex.test(length)) {
                 return false;
             }
-            
+
             return (field.value.length === parseInt(length, 10));
         },
 
@@ -388,6 +389,7 @@
         valid_base64: function(field) {
             return (base64Regex.test(field.value));
         },
+        
         valid_credit_card: function(field){
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
@@ -409,6 +411,24 @@
             }
          
             return (nCheck % 10) == 0;
+        },
+        
+        is_file_type: function(field,type) {
+            if (field.type !== 'file') {
+                return true;
+            }
+
+            var ext = field.value.substr((field.value.lastIndexOf('.') + 1)),
+                typeArray = type.split(','),
+                inArray = false,
+                i = 0,
+                len = typeArray.length;
+
+            for (i; i < len; i++) {
+                if (ext == typeArray[i]) inArray = true;
+            }
+
+            return inArray;
         }
     };
 
