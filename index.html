@@ -145,7 +145,8 @@ var validator = new FormValidator('example_form', [{
                 <p>This array will contain javascript objects with up to three properties:<br />
                 - id: The id attribute of the form element<br />
                 - name: The name attribute of the form element<br />
-                - message: The error message to display<br /></p>
+                - message: The error message to display<br />
+                - rule: The rule that prompted this error<br /></p>
             </li>
             <li>event - If the browser supports it, the onsubmit event is passed in.</li>
         </ul>
@@ -350,6 +351,20 @@ var validator = new FormValidator('example_form', [{
                 <td>returns false if the supplied string contains anything other than valid Base64 characters.</td>
                 <td>no</td>
                 <td></td>
+            </tr>
+            
+            <tr>
+                <td>valid_credit_card</td>
+                <td>returns false if the supplied string is not a valid credit card</td>
+                <td>no</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>is_file_type</td>
+                <td>returns false if the supplied file is not part of the comma separated list in the paramter</td>
+                <td>yes</td>
+                <td>is_file_type[gif,png,jpg]</td>
             </tr>
         </tbody>
     </table>
