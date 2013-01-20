@@ -115,6 +115,22 @@
                 } catch(e) {}
             }
         })(this);
+    },
+
+    attributeValue = function (element, attributeName) {
+        var i;
+
+        if ((element.length > 0) && (element[0].type === 'radio')) {
+            for (i = 0; i < element.length; i++) {
+                if (element[i].checked) {
+                    return element[i][attributeName];
+                }
+            }
+
+            return;
+        }
+
+        return element[attributeName];
     };
 
     /*
@@ -157,10 +173,10 @@
                     element = this.form[field.name];
 
                 if (element && element !== undefined) {
-                    field.id = element.id;
-                    field.type = element.type;
-                    field.value = element.value;
-                    field.checked = element.checked;
+                    field.id = attributeValue(element, 'id');
+                    field.type = (element.length > 0) ? element[0].type : element.type;
+                    field.value = attributeValue(element, 'value');
+                    field.checked = attributeValue(element, 'checked');
                 }
 
                 /*
@@ -210,13 +226,14 @@
         for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
             var method = rules[i],
                 param = null,
-                failed = false;
+                failed = false,
+                parts = ruleRegex.exec(method);
 
             /*
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
 
-            if (parts = ruleRegex.exec(method)) {
+            if (parts) {
                 method = parts[1];
                 param = parts[2];
             }
@@ -279,7 +296,7 @@
         required: function(field) {
             var value = field.value;
 
-            if (field.type === 'checkbox') {
+            if ((field.type === 'checkbox') || (field.type === 'radio')) {
                 return (field.checked === true);
             }
 
@@ -287,7 +304,9 @@
         },
 
         matches: function(field, matchName) {
-            if (el = this.form[matchName]) {
+            var el = this.form[matchName];
+
+            if (el) {
                 return field.value === el.value;
             }
 
