@@ -112,7 +112,10 @@
             return function(event) {
                 try {
                     return that._validateForm(event);
-                } catch(e) {}
+                } catch(e) {
+                    console.error(e);
+                    return false;
+                }
             }
         })(this);
     };
