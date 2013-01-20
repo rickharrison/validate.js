@@ -44,3 +44,7 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
 ## Documentation
 
 You can view everything at http://rickharrison.github.com/validate.js
+
+## Plugins
+
+jQuery: https://github.com/magizh/validate_helper
