@@ -32,7 +32,8 @@
             is_natural: 'The %s field must contain only positive numbers.',
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
             valid_ip: 'The %s field must contain a valid IP.',
-            valid_base64: 'The %s field must contain a base64 string.'
+            valid_base64: 'The %s field must contain a base64 string.',
+            valid_credit_card: 'The %s field must contain a vaild credit card number'
         },
         callback: function(errors) {
 
@@ -54,7 +55,8 @@
         naturalRegex = /^[0-9]+$/i,
         naturalNoZeroRegex = /^[1-9][0-9]*$/i,
         ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
-        base64Regex = /[^a-zA-Z0-9\/\+=]/i;
+        base64Regex = /[^a-zA-Z0-9\/\+=]/i,
+        numericDashRegex = /^[\d\-\s]+$/;
 
     /*
      * The exposed public object to validate a form:
@@ -257,7 +259,7 @@
                 this.errors.push({
                     id: field.id,
                     name: field.name,
-                    message: message 
+                    message: message
                 });
 
                 // Break out so as to not spam with validation errors (i.e. required and valid_email)
@@ -384,6 +386,28 @@
 
         valid_base64: function(field) {
             return (base64Regex.test(field.value));
+        },
+        valid_credit_card: function(field){
+            // Luhn Check Code from https://gist.github.com/4075533
+            // accept only digits, dashes or spaces
+            if (!numericDashRegex.test(field.value)) return false;
+         
+            // The Luhn Algorithm. It's so pretty.
+            var nCheck = 0, nDigit = 0, bEven = false;
+            var strippedField = field.value.replace(/\D/g, "");
+        
+            for (var n = strippedField.length - 1; n >= 0; n--) {
+                var cDigit = strippedField.charAt(n),
+                nDigit = parseInt(cDigit, 10);
+                if (bEven) {
+                    if ((nDigit *= 2) > 9) nDigit -= 9;
+                }
+                
+                nCheck += nDigit;
+                bEven = !bEven;
+            }
+         
+            return (nCheck % 10) == 0;
         }
     };
 
