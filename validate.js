@@ -172,7 +172,10 @@
         }
 
         if (typeof this.callback === 'function') {
-            this.callback(this.errors, event);
+            var callbackReturn = this.callback(this.errors, event);
+            if(typeof callbackReturn === 'boolean'){
+                return callbackReturn;
+            }
         }
 
         if (this.errors.length > 0) {
