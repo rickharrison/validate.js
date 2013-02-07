@@ -212,10 +212,10 @@
         var rules = field.rules.split('|');
 
         /*
-         * If the value is null and not required, we don't need to run through validation
+         * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
          */
-
-        if (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) {
+        
+        if ( (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) && (field.rules.indexOf('callback_') === -1 || field.value === null) ) {
             return;
         }
 
