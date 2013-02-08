@@ -110,9 +110,7 @@
 
         this.form.onsubmit = (function(that) {
             return function(event) {
-                try {
-                    return that._validateForm(event);
-                } catch(e) {}
+                return that._validateForm(event);
             }
         })(this);
     },
@@ -188,7 +186,12 @@
         }
 
         if (typeof this.callback === 'function') {
-            this.callback(this.errors, event);
+            try {
+                this.callback(this.errors, event);
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
 
         if (this.errors.length > 0) {
