@@ -94,7 +94,7 @@
                 return msg;
             }
         }
-    }
+    };
 
     /*
      * Define the regular expressions that will be used
