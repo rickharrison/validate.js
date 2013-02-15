@@ -79,11 +79,11 @@
                     'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' );
                 // UTF-8 encoding is needed for morphological analysis.
                 var re = /(.)(\(.*\))?([를와는가])\(([을과은이])\)/;
-                var m = re.exec(msg);
+                var m;
                 while (m = re.exec(msg)) {
                     for (var i = 0; i < m.length; i += 5) {
                         coda = codas[(m[1].charCodeAt(0) - 0xAC00) % 28];
-                        m[2] = m[2] ? m[2] : '';
+                        m[2] = m[2] || '';
                         if ('' != coda) {
                             msg = msg.replace(re, m[1] + m[2] + m[4]);
                         } else {
@@ -175,10 +175,11 @@
          * Attach an event callback for the form submission
          */
 
+        var _onsubmit = this.form.onsubmit;
         this.form.onsubmit = (function(that) {
             return function(event) {
                 try {
-                    return that._validateForm(event);
+                    return that._validateForm(event) && (undefined === _onsubmit || _onsubmit());
                 } catch(e) {}
             }
         })(this);
