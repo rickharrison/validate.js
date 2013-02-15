@@ -37,9 +37,64 @@
             is_file_type: 'The %s field must contain only %s files.'
         },
         callback: function(errors) {
-
+            
         }
     };
+
+    /**
+     * Multi-language support (Korean)
+     * by @jnhwkim
+     */
+
+    var languages = {
+        ko: {
+            messages: {
+                required: '%s를(을) 입력해야 합니다.',
+                matches: '%s와(과) %s가(이) 일치해야 합니다.',
+                valid_email: '%s가(이) 유효한 이메일 주소가 아닙니다.',
+                valid_emails: '%s에는 이메일 주소만 입력해야 합니다.',
+                min_length: '%s는(은) 적어도 %s 글자 이상이어야 합니다.',
+                max_length: '%s는(은) %s 글자까지 입력할 수 있습니다.',
+                exact_length: '%s는(은) 정확히 %s 글자를 입력해야 합니다.',
+                greater_than: '%s는(은) %s 보다 큰 수를 입력해야 합니다.',
+                less_than: '%s는(은) %s 보다 작은 수를 입력해야 합니다.',
+                alpha: '%s는(은) 영문자만 입력해야 합니다.',
+                alpha_numeric: '%s는(은) 영문자나 숫자를 입력해야 합니다.',
+                alpha_dash: '%s는(은) 영문자나 밑줄(_) 또는 빼기(-)만 입력해야 합니다.',
+                numeric: '%s는(은) 숫자만 입력해야 합니다.',
+                integer: '%s에는 정수를 입력해야 합니다.',
+                decimal: '%s에는 소수를 입력해야 합니다.',
+                is_natural: '%s에는 자연수만 입력해야 합니다.',
+                is_natural_no_zero: '%s에는 0보다 큰 정수를 입력해야 합니다.',
+                valid_ip: '%s가(이) 유효한 IP 주소가 아닙니다.',
+                valid_base64: '%s가(이) 유효한 base64 문자열이 아닙니다.',
+                valid_credit_card: '%s가(이) 유효한 신용카드 번호가 아닙니다.',
+                is_file_type: '%s가(이) %s 파일 형식이 아닙니다.'
+            },
+            post_process: function(filled_message) {
+                var msg = filled_message;
+                var codas = Array(
+                    '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ',
+                    'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ',
+                    'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' );
+                // UTF-8 encoding is needed to morphological analysis.
+                var re = /(.)(\(.*\))?([를와는가])\(([을과은이])\)/;
+                var m = re.exec(msg);
+                while (m = re.exec(msg)) {
+                    for (var i = 0; i < m.length; i += 5) {
+                        coda = codas[(m[1].charCodeAt(0) - 0xAC00) % 28];
+                        m[2] = m[2] ? m[2] : '';
+                        if ('' != coda) {
+                            msg = msg.replace(re, m[1] + m[2] + m[4]);
+                        } else {
+                            msg = msg.replace(re, m[1] + m[2] + m[3]);
+                        }
+                    }
+                }
+                return msg;
+            }
+        }
+    }
 
     /*
      * Define the regular expressions that will be used
@@ -80,6 +135,18 @@
         this.form = document.forms[formName] || {};
         this.messages = {};
         this.handlers = {};
+
+        /**
+         * Auto-loading language supports if it's available.
+         */
+
+        // Get a lang attribute from the HTML root tag.
+        var lang = document.documentElement.lang;
+        this.post_process = undefined;
+        if (languages[lang]) {
+            this.messages = languages[lang].messages;
+            this.post_process = languages[lang].post_process;
+        }
 
         for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
             var field = fields[i];
@@ -271,6 +338,10 @@
 
                     if (param) {
                         message = message.replace('%s', (this.fields[param]) ? this.fields[param].display : param);
+                    }
+                    // Post-processing for each language's syntax
+                    if (this.post_process) {
+                        message = this.post_process(message);
                     }
                 }
 
