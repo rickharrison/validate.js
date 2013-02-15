@@ -77,7 +77,7 @@
                     '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ',
                     'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ',
                     'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' );
-                // UTF-8 encoding is needed to morphological analysis.
+                // UTF-8 encoding is needed for morphological analysis.
                 var re = /(.)(\(.*\))?([를와는가])\(([을과은이])\)/;
                 var m = re.exec(msg);
                 while (m = re.exec(msg)) {
