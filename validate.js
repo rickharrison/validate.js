@@ -33,7 +33,8 @@
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
-            valid_credit_card: 'The %s field must contain a vaild credit card number',
+            valid_credit_card: 'The %s field must contain a vaild credit card number.',
+            valid_date: 'The %s field must contain a valid date format(yyyy-mm-dd).',
             is_file_type: 'The %s field must contain only %s files.'
         },
         callback: function(errors) {
@@ -69,6 +70,7 @@
                 valid_ip: '%s가(이) 유효한 IP 주소가 아닙니다.',
                 valid_base64: '%s가(이) 유효한 base64 문자열이 아닙니다.',
                 valid_credit_card: '%s가(이) 유효한 신용카드 번호가 아닙니다.',
+                valid_date: '%s가(이) 유효한 날짜 형식(yyyy-mm-dd)이 아닙니다.',
                 is_file_type: '%s가(이) %s 파일 형식이 아닙니다.'
             },
             post_process: function(filled_message) {
@@ -104,7 +106,7 @@
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+-/=?\^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+-/=?\^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/,
         alphaRegex = /^[a-z]+$/i,
         alphaNumericRegex = /^[a-z0-9]+$/i,
         alphaDashRegex = /^[a-z0-9_-]+$/i,
@@ -112,6 +114,7 @@
         naturalNoZeroRegex = /^[1-9][0-9]*$/i,
         ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
         base64Regex = /[^a-zA-Z0-9\/\+=]/i,
+        dateRegex = /^19\d{2}-[01]\d-[0123]\d$/,
         numericDashRegex = /^[\d\-\s]+$/;
 
     /*
@@ -502,6 +505,10 @@
             }
          
             return (nCheck % 10) == 0;
+        },
+
+        valid_date: function(field) {
+            return (dateRegex.test(field.value));
         },
         
         is_file_type: function(field,type) {
