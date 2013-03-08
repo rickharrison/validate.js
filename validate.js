@@ -177,13 +177,10 @@
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
+                    
+                    // Run through the rules for each field.
+                    this._validateField(field);
                 }
-
-                /*
-                 * Run through the rules for each field.
-                 */
-
-                this._validateField(field);
             }
         }
 
