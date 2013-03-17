@@ -1,0 +1,6 @@
+{
+  "name": "validate.js",
+  "version": "1.2.0",
+  "main": "./validate.js",
+  "dependencies": {}
+}
