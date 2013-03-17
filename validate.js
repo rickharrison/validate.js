@@ -110,10 +110,12 @@
          * Attach an event callback for the form submission
          */
 
+        var _onsubmit = this.form.onsubmit;
+
         this.form.onsubmit = (function(that) {
             return function(event) {
                 try {
-                    return that._validateForm(event);
+                    return that._validateForm(event) && (_onsubmit === undefined || _onsubmit());
                 } catch(e) {}
             };
         })(this);
