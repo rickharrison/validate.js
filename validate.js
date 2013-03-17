@@ -178,7 +178,10 @@
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
                     
-                    // Run through the rules for each field.
+                    /*
+                     * Run through the rules for each field.
+                     */
+                    
                     this._validateField(field);
                 }
             }
