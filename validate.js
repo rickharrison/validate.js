@@ -50,10 +50,10 @@
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+-/=?\^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
         alphaRegex = /^[a-z]+$/i,
         alphaNumericRegex = /^[a-z0-9]+$/i,
-        alphaDashRegex = /^[a-z0-9_-]+$/i,
+        alphaDashRegex = /^[a-z0-9_\-]+$/i,
         naturalRegex = /^[0-9]+$/i,
         naturalNoZeroRegex = /^[1-9][0-9]*$/i,
         ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
@@ -115,7 +115,7 @@
                 try {
                     return that._validateForm(event);
                 } catch(e) {}
-            }
+            };
         })(this);
     },
 
@@ -419,25 +419,25 @@
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
             if (!numericDashRegex.test(field.value)) return false;
-         
+
             // The Luhn Algorithm. It's so pretty.
             var nCheck = 0, nDigit = 0, bEven = false;
             var strippedField = field.value.replace(/\D/g, "");
-        
+
             for (var n = strippedField.length - 1; n >= 0; n--) {
-                var cDigit = strippedField.charAt(n),
+                var cDigit = strippedField.charAt(n);
                 nDigit = parseInt(cDigit, 10);
                 if (bEven) {
                     if ((nDigit *= 2) > 9) nDigit -= 9;
                 }
-                
+
                 nCheck += nDigit;
                 bEven = !bEven;
             }
-         
-            return (nCheck % 10) == 0;
+
+            return (nCheck % 10) === 0;
         },
-        
+
         is_file_type: function(field,type) {
             if (field.type !== 'file') {
                 return true;
