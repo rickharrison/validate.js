@@ -378,6 +378,13 @@ var validator = new FormValidator('example_form', [{
     
     <h3><span>Release Notes</span></h3>
 
+    <h4>1.2.2 - 03/27/13</h4>
+
+    <ul style="clear:both;">
+        <li>Callbacks will now be fired even if a field is not required - contributed by <a href="https://github.com/TimBenjamin">TimBenjamin</a></li>
+        <li>Fixed an issue in Internet Explorer where the event global variable was being overwritten.
+    </ul>
+
     <h4>1.2.1 - 03/17/13</h4>
     
     <ul style="clear:both;">
@@ -465,7 +472,7 @@ new FormValidator('example_form', [{
     name: 'tos_checkbox',
     display: 'terms of service',
     rules: 'required'
-}], function(errors, event) {
+}], function(errors, evt) {
     var SELECTOR_ERRORS = $('.error_box'),
         SELECTOR_SUCCESS = $('.success_box');
         
@@ -483,8 +490,8 @@ new FormValidator('example_form', [{
         SELECTOR_SUCCESS.fadeIn(200);
     }
     
-    if (event && event.preventDefault) {
-        event.preventDefault();
+    if (evt && evt.preventDefault) {
+        evt.preventDefault();
     } else if (event) {
         event.returnValue = false;
     }
