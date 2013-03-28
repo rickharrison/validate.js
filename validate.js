@@ -1,5 +1,5 @@
 /*
- * validate.js 1.2.1
+ * validate.js 1.2.2
  * Copyright (c) 2011 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
@@ -113,9 +113,9 @@
         var _onsubmit = this.form.onsubmit;
 
         this.form.onsubmit = (function(that) {
-            return function(event) {
+            return function(evt) {
                 try {
-                    return that._validateForm(event) && (_onsubmit === undefined || _onsubmit());
+                    return that._validateForm(evt) && (_onsubmit === undefined || _onsubmit());
                 } catch(e) {}
             };
         })(this);
@@ -168,7 +168,7 @@
      * Runs the validation when the form is submitted.
      */
 
-    FormValidator.prototype._validateForm = function(event) {
+    FormValidator.prototype._validateForm = function(evt) {
         this.errors = [];
 
         for (var key in this.fields) {
@@ -192,15 +192,15 @@
         }
 
         if (typeof this.callback === 'function') {
-            this.callback(this.errors, event);
+            this.callback(this.errors, evt);
         }
 
         if (this.errors.length > 0) {
-            if (event && event.preventDefault) {
-                event.preventDefault();
-            } else {
-                // IE6 doesn't pass in an event parameter so return false
-                return false;
+            if (evt && evt.preventDefault) {
+                evt.preventDefault();
+            } else if (event) {
+                // IE uses the global event variable
+                event.returnValue = false;
             }
         }
 
@@ -216,10 +216,10 @@
         var rules = field.rules.split('|');
 
         /*
-         * If the value is null and not required, we don't need to run through validation
+         * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
          */
-
-        if (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) {
+        
+        if ( (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) && (field.rules.indexOf('callback_') === -1 || field.value === null) ) {
             return;
         }
 
