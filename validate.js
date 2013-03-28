@@ -113,9 +113,9 @@
         var _onsubmit = this.form.onsubmit;
 
         this.form.onsubmit = (function(that) {
-            return function(event) {
+            return function(evt) {
                 try {
-                    return that._validateForm(event) && (_onsubmit === undefined || _onsubmit());
+                    return that._validateForm(evt) && (_onsubmit === undefined || _onsubmit());
                 } catch(e) {}
             };
         })(this);
@@ -168,7 +168,7 @@
      * Runs the validation when the form is submitted.
      */
 
-    FormValidator.prototype._validateForm = function(event) {
+    FormValidator.prototype._validateForm = function(evt) {
         this.errors = [];
 
         for (var key in this.fields) {
@@ -192,15 +192,15 @@
         }
 
         if (typeof this.callback === 'function') {
-            this.callback(this.errors, event);
+            this.callback(this.errors, evt);
         }
 
         if (this.errors.length > 0) {
-            if (event && event.preventDefault) {
-                event.preventDefault();
-            } else {
-                // IE6 doesn't pass in an event parameter so return false
-                return false;
+            if (evt && evt.preventDefault) {
+                evt.preventDefault();
+            } else if (event) {
+                // IE uses the global event variable
+                event.returnValue = false;
             }
         }
 
