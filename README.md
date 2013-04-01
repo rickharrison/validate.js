@@ -14,17 +14,17 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
 
 ## Installation
 
-   <script type="text/javascript" src="validate.min.js"></script>
+   `<script type="text/javascript" src="validate.min.js"></script>`
 
 or
    
-   <script type="text/javascript" src="validate.js"></script>
+   `<script type="text/javascript" src="validate.js"></script>`
 
 -------
 
 you should also install jQuery:
 
-   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+   `<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>`
 
 ## How to use
 
