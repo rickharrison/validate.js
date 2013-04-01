@@ -1,0 +1,334 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+b {
+    font-weight:bold;
+}
+
+/* Main CSS */
+
+body {
+    background:url('../assets/background.png');
+    color:#444;
+    font:15px 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+    margin:30px 100px;
+}
+
+#content {
+    margin:0 0 0 25px;
+    width:720px;
+}
+
+#content .bm {
+    margin-bottom:25px;
+}
+
+h1 {
+    color:#FF4200;
+    font:120px 'Andada', 'Helvetica', Arial, sans-serif;
+    margin:0 0 15px 0;
+}
+
+h2 {
+    font-size:22px;
+    font-weight:400;
+    text-shadow:0px 1px #f8f8f8;
+}
+
+h3 {
+    clear:both;
+    color:#FFF;
+    margin-bottom:20px;
+}
+
+h3 span {
+    background:#FF4200;
+    font-size:18px;
+    padding:5px 10px;
+}
+
+h4 {
+    float:left;
+    font-weight:700;
+    margin-bottom:15px;
+    margin-right:20px;
+}
+
+.button {
+    background-color:#0885c7;
+    background-repeat:repeat-x;
+    background-image:-khtml-gradient(linear, left top, left bottom, from(#4cbbf5), to(#0885c7));
+    background-image:-moz-linear-gradient(top, #4cbbf5, #0885c7);
+    background-image:-ms-linear-gradient(top, #4cbbf5, #0885c7);
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #4cbbf5), color-stop(100%, #0885c7));
+    background-image:-webkit-linear-gradient(top, #4cbbf5, #0885c7);
+    background-image:-o-linear-gradient(top, #4cbbf5, #0885c7);
+    background-image:linear-gradient(top, #4cbbf5, #0885c7);
+    
+    border:1px solid #00527d;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    
+    color:#ffffff;
+    cursor:pointer;
+    display:block;
+    float:left;
+    font-size:20px;
+    line-height:normal;
+    padding:10px 15px;
+    text-align:center;
+    text-decoration:none;
+    text-shadow:0 -1px #444444;
+    
+    transition:0.2s linear all;
+    -webkit-transition:0.2s linear all;
+    -moz-transition:0.2s linear all;
+    -ms-transition:0.2s linear all;
+    -o-transition:0.2s linear all;
+}
+
+.button:hover {
+    background-position:0 -15px;
+    text-decoration:none;
+}
+
+.button:active {
+    box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.button span {
+    display:block;
+    font-size:14px;
+    font-style:italic;
+}
+
+.button.download {
+    color:#fff;
+    margin:0 20px 30px 0;
+}
+
+.button.download:hover {
+    color:#fff;
+}
+
+.button.gray {
+    background-color: #dcdcdc;
+    background-repeat: no-repeat;
+    background-image:-khtml-gradient(linear, left top, left bottom, from(#f2f2f2), to(#dcdcdc));
+    background-image:-moz-linear-gradient(top, #f2f2f2, #dcdcdc);
+    background-image:-ms-linear-gradient(top, #f2f2f2, #dcdcdc);
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #dcdcdc), color-stop(100%, #dcdcdc));
+    background-image:-webkit-linear-gradient(top, #f2f2f2, #dcdcdc);
+    background-image:-o-linear-gradient(top, #f2f2f2, #dcdcdc);
+    background-image:linear-gradient(top, #f2f2f2, #dcdcdc);
+    border:1px solid #444;
+    color:#444;
+    font-size:14px;
+    font-weight:bold;
+    text-shadow:0px -1px #FFF;
+}
+
+ul {
+    display:block;
+    list-style-position:outside;
+    list-style-type:disc;
+    margin-left:20px;
+    margin-bottom:40px;
+}
+
+ul.inline {
+    margin-bottom:15px;
+}
+
+li {
+    text-shadow:0px 1px #f8f8f8;
+}
+
+div.section {
+    margin-bottom:50px;
+}
+
+p {
+    margin-bottom:10px;
+    text-shadow:0px 1px #f8f8f8;
+}
+
+/* Form */
+
+label, input {
+    border:0;
+    display:block;
+    float:left;
+    padding:0;
+    margin:0 30px 5px 0;
+    width:330px;
+}
+
+input {
+    background:#f8f8f8;
+    border:1px solid #444;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    margin-bottom:20px;
+    padding:10px 7px;
+    width:314px;
+}
+
+input:hover, textarea:hover {
+    box-shadow:0px 0px 6px #C0C0C0;
+    -moz-box-shadow:0px 0px 6px #C0C0C0
+    -webkit-box-shadow:0px 0px 6px #C0C0C0;
+}
+
+input:focus, textarea:focus {
+    border:1px solid #0885c7;
+    outline:none;
+    box-shadow:0px 0px 12px #C0C0C0;
+    -moz-box-shadow:0px 0px 12px #C0C0C0
+    -webkit-box-shadow:0px 0px 12px #C0C0C0;
+}
+
+button {
+    clear:both;
+    margin-bottom:50px;
+}
+
+.error_box {
+    background:#FAD3C4;
+    border:1px solid #A75B4E;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    color:#444444;
+    display:none;
+    font-size:13px;
+    margin:0px 0px 15px 0px;
+    padding:8px 8px;
+    width:672px;
+}
+
+.success_box {
+    background:#E2F1BB;
+    border:1px solid #598800;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    color:#000000;
+    display:none;
+    font-size:13px;
+    margin:0px 0px 15px 0px;
+    padding:8px 8px;
+    width:672px;
+}
+
+input#tos_checkbox {
+    clear:both;
+}
+
+/* links */
+
+a, a:active, a:visited {
+    color:#444;
+    text-decoration:underline;
+}
+
+a:hover {
+    color:#1F93D0;
+}
+
+/* Tables */
+
+table {
+    margin:35px 0 50px 0;
+}
+
+th {
+    text-align:left;
+}
+
+th span {
+    background:#1F93D0;
+    color:#FFFFFF;
+    display:block;
+    float:left;
+    padding:5px 10px;
+    margin:0 0 10px 0;  
+}
+
+td {
+    font-size:15px;
+    padding:0 15px 13px 0;
+    text-shadow:0px 1px #f8f8f8;
+}
+
+/* Code Formatting */
+
+tt, pre {
+    color:#3c1001;
+    font:13px Monaco, Consolas, "Lucida Console", monospace;
+}
+
+pre {
+    border-left:5px solid #0885c7;
+    margin:0 0 40px 0;
+    padding:0 0 0 10px;
+}
+
+pre.inline {
+    margin:0 0 15px 0;
+}
+
+/* github buttons */
+
+.github {
+    margin-bottom:60px;
+}
