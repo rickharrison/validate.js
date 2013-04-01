@@ -14,19 +14,19 @@
 
     var defaults = {
         messages: {
-            required: 'The %s field is required.',
-            matches: 'The %s field does not match the %s field.',
-            valid_email: 'The %s field must contain a valid email address.',
-            valid_emails: 'The %s field must contain all valid email addresses.',
-            min_length: 'The %s field must be at least %s characters in length.',
-            max_length: 'The %s field must not exceed %s characters in length.',
-            exact_length: 'The %s field must be exactly %s characters in length.',
-            greater_than: 'The %s field must contain a number greater than %s.',
-            less_than: 'The %s field must contain a number less than %s.',
+            required: '必須填滿 %s 欄位。',
+            matches: '你的 %s 欄位與 %s 欄位不符。',
+            valid_email: '請填上有效的 %s ',
+            valid_emails: '請填上有效的 %s ',
+            min_length: '你的 %s 必須至少填滿 %s 個字元。',
+            max_length: '你的 %s 必須不能超過 %s 個字元。',
+            exact_length: '你的 %s 必須剛好要 %s 個字元。',
+            greater_than: '你的 %s 必須要有個大於 %s 的數字。',
+            less_than: '你的 %s 必須要有個小於 %s 的數字。',
             alpha: 'The %s field must only contain alphabetical characters.',
             alpha_numeric: 'The %s field must only contain alpha-numeric characters.',
             alpha_dash: 'The %s field must only contain alpha-numeric characters, underscores, and dashes.',
-            numeric: 'The %s field must contain only numbers.',
+            numeric: '你的 %s 必須只有數字。',
             integer: 'The %s field must contain an integer.',
             decimal: 'The %s field must contain a decimal number.',
             is_natural: 'The %s field must contain only positive numbers.',
@@ -34,8 +34,8 @@
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
             valid_credit_card: 'The %s field must contain a vaild credit card number',
-            is_file_type: 'The %s field must contain only %s files.',
-            valid_url: 'The %s field must contain a valid URL.'
+            is_file_type: '你的 %s 欄位必須要一個 %s 的檔案。',
+            valid_url: '你的 %s 必須是要一個有效的 URL.'
         },
         callback: function(errors) {
 
