@@ -26,6 +26,11 @@ you should also install jQuery:
 
    `<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>`
 
+## Chinese version
+
+https://github.com/chilijung/validate.js
+
+
 ## How to use
 
     var validator = new FormValidator('example_form', [{
