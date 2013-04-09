@@ -6,7 +6,7 @@
  * http://rickharrison.github.com/validate.js
  */
 
-(function(window, document, undefined) {
+!(function(window, document, undefined) {
     /*
      * If you would like an application-wide config, change these defaults.
      * Otherwise, use the setMessage() function to configure form specific messages.
