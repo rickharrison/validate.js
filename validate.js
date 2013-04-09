@@ -95,16 +95,13 @@
             /*
              * Build the master fields array that has all the information needed to validate
              */
-
-            this.fields[field.name] = {
-                name: field.name,
-                display: field.display || field.name,
-                rules: field.rules,
-                id: null,
-                type: null,
-                value: null,
-                checked: null
-            };
+            if (Object.prototype.toString.call(field.name) === "[object Array]") {
+                for(var j = 0; j < field.name.length; j++) {
+                    this.addField(field, j);
+                }
+            } else {
+                this.addField(field);
+            }
         }
 
         /*
@@ -152,6 +149,24 @@
 
     /*
      * @public
+     * Adds a file to the master fields array
+     */
+
+    FormValidator.prototype.addField = function(field, nameIndex)  {
+        var _name = typeof nameIndex == "undefined" ? field.name : field.name[nameIndex]
+        this.fields[_name] = {
+            name: _name,
+            display: field.display || _name,
+            rules: field.rules,
+            id: null,
+            type: null,
+            value: null,
+            checked: null
+        };
+    };
+
+    /*
+     * @public
      * Registers a callback for a custom rule (i.e. callback_username_check)
      */
 
@@ -191,11 +206,11 @@
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
-                    
+
                     /*
                      * Run through the rules for each field.
                      */
-                    
+
                     this._validateField(field);
                 }
             }
@@ -228,7 +243,7 @@
         /*
          * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
          */
-        
+
         if ( (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) && (field.rules.indexOf('callback_') === -1 || field.value === null) ) {
             return;
         }
@@ -430,7 +445,7 @@
         valid_url: function(field) {
             return (urlRegex.test(field.value));
         },
-        
+
         valid_credit_card: function(field){
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
