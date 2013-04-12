@@ -1,5 +1,5 @@
 /*
- * validate.js 1.2
+ * validate.js 1.2.2
  * Copyright (c) 2011 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
@@ -34,7 +34,8 @@
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
             valid_credit_card: 'The %s field must contain a vaild credit card number',
-            is_file_type: 'The %s field must contain only %s files.'
+            is_file_type: 'The %s field must contain only %s files.',
+            valid_url: 'The %s field must contain a valid URL.'
         },
         callback: function(errors) {
 
@@ -49,15 +50,16 @@
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+-/=?\^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
         alphaRegex = /^[a-z]+$/i,
         alphaNumericRegex = /^[a-z0-9]+$/i,
-        alphaDashRegex = /^[a-z0-9_-]+$/i,
+        alphaDashRegex = /^[a-z0-9_\-]+$/i,
         naturalRegex = /^[0-9]+$/i,
         naturalNoZeroRegex = /^[1-9][0-9]*$/i,
         ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
         base64Regex = /[^a-zA-Z0-9\/\+=]/i,
-        numericDashRegex = /^[\d\-\s]+$/;
+        numericDashRegex = /^[\d\-\s]+$/,
+        urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
 
     /*
      * The exposed public object to validate a form:
@@ -108,12 +110,14 @@
          * Attach an event callback for the form submission
          */
 
+        var _onsubmit = this.form.onsubmit;
+
         this.form.onsubmit = (function(that) {
-            return function(event) {
+            return function(evt) {
                 try {
-                    return that._validateForm(event);
+                    return that._validateForm(evt) && (_onsubmit === undefined || _onsubmit());
                 } catch(e) {}
-            }
+            };
         })(this);
     },
 
@@ -164,7 +168,7 @@
      * Runs the validation when the form is submitted.
      */
 
-    FormValidator.prototype._validateForm = function(event) {
+    FormValidator.prototype._validateForm = function(evt) {
         this.errors = [];
 
         for (var key in this.fields) {
@@ -177,26 +181,26 @@
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
+                    
+                    /*
+                     * Run through the rules for each field.
+                     */
+                    
+                    this._validateField(field);
                 }
-
-                /*
-                 * Run through the rules for each field.
-                 */
-
-                this._validateField(field);
             }
         }
 
         if (typeof this.callback === 'function') {
-            this.callback(this.errors, event);
+            this.callback(this.errors, evt);
         }
 
         if (this.errors.length > 0) {
-            if (event && event.preventDefault) {
-                event.preventDefault();
-            } else {
-                // IE6 doesn't pass in an event parameter so return false
-                return false;
+            if (evt && evt.preventDefault) {
+                evt.preventDefault();
+            } else if (event) {
+                // IE uses the global event variable
+                event.returnValue = false;
             }
         }
 
@@ -408,30 +412,34 @@
         valid_base64: function(field) {
             return (base64Regex.test(field.value));
         },
+
+        valid_url: function(field) {
+            return (urlRegex.test(field.value));
+        },
         
         valid_credit_card: function(field){
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
             if (!numericDashRegex.test(field.value)) return false;
-         
+
             // The Luhn Algorithm. It's so pretty.
             var nCheck = 0, nDigit = 0, bEven = false;
             var strippedField = field.value.replace(/\D/g, "");
-        
+
             for (var n = strippedField.length - 1; n >= 0; n--) {
-                var cDigit = strippedField.charAt(n),
+                var cDigit = strippedField.charAt(n);
                 nDigit = parseInt(cDigit, 10);
                 if (bEven) {
                     if ((nDigit *= 2) > 9) nDigit -= 9;
                 }
-                
+
                 nCheck += nDigit;
                 bEven = !bEven;
             }
-         
-            return (nCheck % 10) == 0;
+
+            return (nCheck % 10) === 0;
         },
-        
+
         is_file_type: function(field,type) {
             if (field.type !== 'file') {
                 return true;
