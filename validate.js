@@ -27,10 +27,14 @@
             alpha_numeric: 'The %s field must only contain alpha-numeric characters.',
             alpha_dash: 'The %s field must only contain alpha-numeric characters, underscores, and dashes.',
             numeric: 'The %s field must contain only numbers.',
+            numeric_or_empty: 'The %s field must be empty or contain only numbers.',
             integer: 'The %s field must contain an integer.',
+            integer_or_empty: 'The %s field must be empty or contain an integer.',
             decimal: 'The %s field must contain a decimal number.',
+            decimal_or_empty: 'The %s field must be empty or contain a decimal number.',
             is_natural: 'The %s field must contain only positive numbers.',
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
+            is_natural_or_empty: 'The %s field must be empty or contain only positive numbers.',
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
             valid_credit_card: 'The %s field must contain a vaild credit card number',
@@ -388,12 +392,33 @@
         numeric: function(field) {
             return (decimalRegex.test(field.value));
         },
+        
+        numeric_or_empty: function(field) {
+            if(field.value.length == 0){
+                return true;
+            }
+            return (decimalRegex.test(field.value));
+        },
 
         integer: function(field) {
             return (integerRegex.test(field.value));
         },
+        
+        integer_or_empty: function(field) {
+            if(field.value.length == 0){
+                return true;
+            }
+            return (integerRegex.test(field.value));
+        },
 
         decimal: function(field) {
+            return (decimalRegex.test(field.value));
+        },
+        
+        decimal_or_empty: function(field) {
+            if(field.value.length == 0){
+                return true;
+            }
             return (decimalRegex.test(field.value));
         },
 
@@ -403,6 +428,13 @@
 
         is_natural_no_zero: function(field) {
             return (naturalNoZeroRegex.test(field.value));
+        },
+        
+        is_natural_or_empty: function(field) {
+            if(field.value.length == 0){
+                return true;
+            }
+            return (naturalRegex.test(field.value));
         },
 
         valid_ip: function(field) {
