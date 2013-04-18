@@ -400,7 +400,7 @@
         },
 
         numeric: function(field) {
-            return (decimalRegex.test(field.value));
+            return (numericRegex.test(field.value));
         },
 
         integer: function(field) {
