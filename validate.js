@@ -317,12 +317,10 @@
             return (value !== null && value !== '');
         },
         
-        default: function(field,defaultName){
-			return field.value !== defaultName;
-			
-		
-		},
-        
+        default: function(field, defaultName){
+            return field.value !== defaultName;
+        },
+
         matches: function(field, matchName) {
             var el = this.form[matchName];
 
