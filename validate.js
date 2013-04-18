@@ -64,7 +64,7 @@
     /*
      * The exposed public object to validate a form:
      *
-     * @param formNameorNode - String - The name attribute of the form (i.e. <form name="myForm"></form>) or Node of the form element
+     * @param formNameOrNode - String - The name attribute of the form (i.e. <form name="myForm"></form>) or node of the form element
      * @param fields - Array - [{
      *     name: The name of the element (i.e. <input name="myField" />)
      *     display: 'Field Name'
@@ -75,11 +75,11 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formNameorNode, fields, callback) {
+    var FormValidator = function(formNameOrNode, fields, callback) {
         this.callback = callback || defaults.callback;
         this.errors = [];
         this.fields = {};
-        this.form = this._getFormByNameOrElement(formNameorNode);
+        this.form = this._formByNameOrNode(formNameOrNode) || {};
         this.messages = {};
         this.handlers = {};
 
@@ -165,6 +165,15 @@
 
     /*
      * @private
+     * Determines if a form dom node was passed in or just a string representing the form name
+     */
+
+    FormValidator.prototype._formByNameOrNode = function(formNameOrNode) {
+        return (typeof formNameOrNode === 'object') ? formNameOrNode : document.forms[formNameOrNode];
+    };
+
+    /*
+     * @private
      * Runs the validation when the form is submitted.
      */
 
@@ -207,15 +216,6 @@
         return true;
     };
 
-    FormValidator.prototype._getFormByNameOrElement = function(formNameorNode) {
-        if (typeof formNameorNode === "object") {
-            return formNameorNode;
-        }
-        else if (typeof formNameorNode === "string") {
-            return document.forms[formNameorNode] || {};
-        }
-        return {};
-    }
     /*
      * @private
      * Looks at the fields value and evaluates it against the given rules
