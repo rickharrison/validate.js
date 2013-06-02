@@ -88,19 +88,20 @@
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
-            if (!field.name || !field.rules) {
+            if ((!field.name && !field.names) || !field.rules) {
                 continue;
             }
 
             /*
              * Build the master fields array that has all the information needed to validate
              */
-            if (Object.prototype.toString.call(field.name) === "[object Array]") {
-                for(var j = 0; j < field.name.length; j++) {
-                    this.addField(field, j);
+
+            if (field.names) {
+                for (var j = 0; j < field.names.length; j++) {
+                    this._addField(field, field.names[j]);
                 }
             } else {
-                this.addField(field);
+                this._addField(field, field.name);
             }
         }
 
@@ -149,24 +150,6 @@
 
     /*
      * @public
-     * Adds a file to the master fields array
-     */
-
-    FormValidator.prototype.addField = function(field, nameIndex)  {
-        var _name = typeof nameIndex == "undefined" ? field.name : field.name[nameIndex]
-        this.fields[_name] = {
-            name: _name,
-            display: field.display || _name,
-            rules: field.rules,
-            id: null,
-            type: null,
-            value: null,
-            checked: null
-        };
-    };
-
-    /*
-     * @public
      * Registers a callback for a custom rule (i.e. callback_username_check)
      */
 
@@ -186,6 +169,23 @@
 
     FormValidator.prototype._formByNameOrNode = function(formNameOrNode) {
         return (typeof formNameOrNode === 'object') ? formNameOrNode : document.forms[formNameOrNode];
+    };
+
+    /*
+     * @private
+     * Adds a file to the master fields array
+     */
+
+    FormValidator.prototype._addField = function(field, nameValue)  {
+        this.fields[nameValue] = {
+            name: nameValue,
+            display: field.display || nameValue,
+            rules: field.rules,
+            id: null,
+            type: null,
+            value: null,
+            checked: null
+        };
     };
 
     /*
