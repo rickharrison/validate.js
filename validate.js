@@ -16,7 +16,7 @@
         messages: {
             required: 'The %s field is required.',
             matches: 'The %s field does not match the %s field.',
-            default: 'The %s field is still set to default, please change',
+            default: 'The %s field is still set to default, please change.',
             valid_email: 'The %s field must contain a valid email address.',
             valid_emails: 'The %s field must contain all valid email addresses.',
             min_length: 'The %s field must be at least %s characters in length.',
@@ -34,7 +34,7 @@
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
-            valid_credit_card: 'The %s field must contain a valid credit card number',
+            valid_credit_card: 'The %s field must contain a valid credit card number.',
             is_file_type: 'The %s field must contain only %s files.',
             valid_url: 'The %s field must contain a valid URL.'
         },
