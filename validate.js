@@ -34,7 +34,7 @@
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
-            valid_credit_card: 'The %s field must contain a vaild credit card number',
+            valid_credit_card: 'The %s field must contain a valid credit card number',
             is_file_type: 'The %s field must contain only %s files.',
             valid_url: 'The %s field must contain a valid URL.'
         },
