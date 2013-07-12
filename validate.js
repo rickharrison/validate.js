@@ -91,7 +91,6 @@
         }
     };
 
-    console.log(defaults['chinese'])
 
     /*
      * Define the regular expressions that will be used
@@ -115,7 +114,7 @@
     /*
      * The exposed public object to validate a form:
      *
-     * @param formName - String - The name attribute of the form (i.e. <form name="myForm"></form>)
+     * @param formNameOrNode - String - The name attribute of the form (i.e. <form name="myForm"></form>) or node of the form element
      * @param fields - Array - [{
      *     name: The name of the element (i.e. <input name="myField" />)
      *     display: 'Field Name'
@@ -126,12 +125,14 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formName, fields, language, callback) {
+
+    var FormValidator = function(formNameOrNode, fields, language, callback) {
+
         this.callback = callback || defaults.callback;
         this.language = language;
         this.errors = [];
         this.fields = {};
-        this.form = document.forms[formName] || {};
+        this.form = this._formByNameOrNode(formNameOrNode) || {};
         this.messages = {};
         this.handlers = {};
 
@@ -139,7 +140,7 @@
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
-            if (!field.name || !field.rules) {
+            if ((!field.name && !field.names) || !field.rules) {
                 continue;
             }
 
@@ -147,22 +148,19 @@
              * Build the master fields array that has all the information needed to validate
              */
 
-            this.fields[field.name] = {
-                name: field.name,
-                display: field.display || field.name,
-                rules: field.rules,
-                id: null,
-                type: null,
-                value: null,
-                checked: null
-            };
+            if (field.names) {
+                for (var j = 0; j < field.names.length; j++) {
+                    this._addField(field, field.names[j]);
+                }
+            } else {
+                this._addField(field, field.name);
+            }
         }
 
         /*
          * Attach an event callback for the form submission
          */
 
-         console.log(this.form.onsubmit)
         var _onsubmit = this.form.onsubmit;
 
         this.form.onsubmit = (function(that) {
@@ -218,6 +216,32 @@
 
     /*
      * @private
+     * Determines if a form dom node was passed in or just a string representing the form name
+     */
+
+    FormValidator.prototype._formByNameOrNode = function(formNameOrNode) {
+        return (typeof formNameOrNode === 'object') ? formNameOrNode : document.forms[formNameOrNode];
+    };
+
+    /*
+     * @private
+     * Adds a file to the master fields array
+     */
+
+    FormValidator.prototype._addField = function(field, nameValue)  {
+        this.fields[nameValue] = {
+            name: nameValue,
+            display: field.display || nameValue,
+            rules: field.rules,
+            id: null,
+            type: null,
+            value: null,
+            checked: null
+        };
+    };
+
+    /*
+     * @private
      * Runs the validation when the form is submitted.
      */
 
@@ -234,13 +258,10 @@
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
-                    
+
                     /*
                      * Run through the rules for each field.
                      */
-                    
-                    console.log('field' + field)
-                    
                     this._validateField(field);
                 }
             }
@@ -273,7 +294,7 @@
         /*
          * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
          */
-        
+
         if ( (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) && (field.rules.indexOf('callback_') === -1 || field.value === null) ) {
             return;
         }
@@ -310,7 +331,7 @@
                 method = method.substring(9, method.length);
 
                 if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value]) === false) {
+                    if (this.handlers[method].apply(this, [field.value, param]) === false) {
                         failed = true;
                     }
                 }
@@ -362,6 +383,10 @@
             }
 
             return (value !== null && value !== '');
+        },
+        
+        default: function(field, defaultName){
+            return field.value !== defaultName;
         },
 
         matches: function(field, matchName) {
@@ -443,7 +468,7 @@
         },
 
         numeric: function(field) {
-            return (decimalRegex.test(field.value));
+            return (numericRegex.test(field.value));
         },
 
         integer: function(field) {
@@ -473,7 +498,7 @@
         valid_url: function(field) {
             return (urlRegex.test(field.value));
         },
-        
+
         valid_credit_card: function(field){
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
