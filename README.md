@@ -11,6 +11,7 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
 - Chainable customization methods for ease of declaration
 - Works in all major browsers, (even IE6!)
 - Modeled off the CodeIgniter form validation API
+- Support multipule language.(now for chinese, chinese_zh, english)
 
 ## Installation
 
@@ -43,7 +44,7 @@ or
         name: 'minlength',
         display: 'min length',
         rules: 'min_length[8]'
-    }], function(errors) {
+    }], 'english', function(errors) {
         if (errors.length > 0) {
             // Show the errors
         }
