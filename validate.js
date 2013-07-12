@@ -85,7 +85,7 @@
             valid_credit_card: '%s 必须是有效的信用卡号。',
             is_file_type: '%s 只能是 %s 的文件。',
             valid_url: '%s 必须是有效的 URL。'
-        }
+        },
         callback: function(errors) {
 
         }
