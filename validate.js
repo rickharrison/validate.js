@@ -13,7 +13,7 @@
      */
 
     var defaults = {
-        messages: {
+        english: {
             required: 'The %s field is required.',
             matches: 'The %s field does not match the %s field.',
             default: 'The %s field is still set to default, please change.',
@@ -38,10 +38,59 @@
             is_file_type: 'The %s field must contain only %s files.',
             valid_url: 'The %s field must contain a valid URL.'
         },
+        chinese_zh: {
+            required: '必須填滿 %s 欄位。',
+            matches: '你的 %s 欄位與 %s 欄位不符。',
+            valid_email: '請填上有效的 %s ',
+            valid_emails: '請填上有效的 %s ',
+            min_length: '你的 %s 必須至少填滿 %s 個字元。',
+            max_length: '你的 %s 必須不能超過 %s 個字元。',
+            exact_length: '你的 %s 必須剛好要 %s 個字元。',
+            greater_than: '你的 %s 必須要有個大於 %s 的數字。',
+            less_than: '你的 %s 必須要有個小於 %s 的數字。',
+            alpha: '你的 %s 必須只有英文字母。',
+            alpha_numeric: '你的 %s 必須只有英文字母或數字。',
+            alpha_dash: '你的 %s 只可以是英文字母、數字、底線或破折號。',
+            numeric: '你的 %s 必須只有數字。',
+            integer: '你的 %s 必須是個整數。',
+            decimal: '你的 %s 必須是個小數點。',
+            is_natural: '你的 %s 必須只有正數。',
+            is_natural_no_zero: '你的 %s 必須是個大於零的數字。',
+            valid_ip: '你的 %s 必須是個有效的 IP。',
+            valid_base64: '你的 %s 必須是個 base64 字串。',
+            valid_credit_card: '你的 %s 必須是個有效的信用卡號碼。',
+            is_file_type: '你的 %s 欄位必須要一個 %s 的檔案。',
+            valid_url: '你的 %s 必須是要一個有效的 URL。'
+        },
+        chinese: {
+            required: '%s 不能为空。',
+            matches: ' %s 与 %s 输入不一致。',
+            valid_email: '%s 输入无效',
+            valid_emails: '%s 输入无效',
+            min_length: '%s 至少 %s 个字符。',
+            max_length: '%s 最多 %s 个字符。',
+            exact_length: '%s 只能 %s 个字符。',
+            greater_than: '%s 必须是大于 %s 的数字。',
+            less_than: '%s 必须是小于 %s 的数字。',
+            alpha: '%s 必须是英文字母。',
+            alpha_numeric: '你的 %s 必須只有英文字母或數字。',
+            alpha_dash: '%s 只能是英文字母、数字、下划线和横线',
+            numeric: '%s 只能是数字。',
+            integer: '%s 只能是整数。',
+            decimal: '%s 必须是小数。',
+            is_natural: '%s 必须是正数。',
+            is_natural_no_zero: '%s 必须是大于零的数字。',
+            valid_ip: '%s 必须是有效的IP。',
+            valid_base64: '%s 必须是 base64 字符。',
+            valid_credit_card: '%s 必须是有效的信用卡号。',
+            is_file_type: '%s 只能是 %s 的文件。',
+            valid_url: '%s 必须是有效的 URL。'
+        },
         callback: function(errors) {
 
         }
     };
+
 
     /*
      * Define the regular expressions that will be used
@@ -76,8 +125,11 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formNameOrNode, fields, callback) {
+
+    var FormValidator = function(formNameOrNode, fields, language, callback) {
+
         this.callback = callback || defaults.callback;
+        this.language = language;
         this.errors = [];
         this.fields = {};
         this.form = this._formByNameOrNode(formNameOrNode) || {};
@@ -210,7 +262,6 @@
                     /*
                      * Run through the rules for each field.
                      */
-
                     this._validateField(field);
                 }
             }
@@ -292,7 +343,9 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method],
+                // 
+
+                var source = this.messages[method] || defaults[this.language][method],
                     message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
