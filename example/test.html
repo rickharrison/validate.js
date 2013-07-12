@@ -3,6 +3,7 @@
       <script type="text/javascript" src="../validate.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
       <link href="main.css" rel="stylesheet" type="text/css" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
    </head>
 
    <body>
@@ -62,7 +63,7 @@
           name: 'tos_checkbox',
           display: 'terms of service',
           rules: 'required'
-      }], function(errors, evt) {
+      }], 'chinese', function(errors, evt) {
           var SELECTOR_ERRORS = $('.error_box'),
               SELECTOR_SUCCESS = $('.success_box');
               

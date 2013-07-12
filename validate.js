@@ -13,7 +13,7 @@
      */
 
     var defaults = {
-        messages: {
+        chinese: {
             required: '必須填滿 %s 欄位。',
             matches: '你的 %s 欄位與 %s 欄位不符。',
             valid_email: '請填上有效的 %s ',
@@ -41,6 +41,8 @@
 
         }
     };
+
+    console.log(defaults['chinese'])
 
     /*
      * Define the regular expressions that will be used
@@ -75,8 +77,9 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formName, fields, callback) {
+    var FormValidator = function(formName, fields, language, callback) {
         this.callback = callback || defaults.callback;
+        this.language = language;
         this.errors = [];
         this.fields = {};
         this.form = document.forms[formName] || {};
@@ -110,6 +113,7 @@
          * Attach an event callback for the form submission
          */
 
+         console.log(this.form.onsubmit)
         var _onsubmit = this.form.onsubmit;
 
         this.form.onsubmit = (function(that) {
@@ -185,6 +189,8 @@
                     /*
                      * Run through the rules for each field.
                      */
+                    
+                    console.log('field' + field)
                     
                     this._validateField(field);
                 }
@@ -267,7 +273,9 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method],
+                // 
+
+                var source = this.messages[method] || defaults[this.language][method],
                     message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
