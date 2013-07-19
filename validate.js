@@ -216,6 +216,9 @@
             }
         }
 
+        /* clear the validating variable used to pass fields to callbacks */
+        delete this.validating;
+
         if (typeof this.callback === 'function') {
             this.callback(this.errors, evt);
         }
@@ -239,6 +242,12 @@
 
     FormValidator.prototype._validateField = function(field) {
         var rules = field.rules.split('|');
+
+        /*
+         * Attach validating field to this, so it's available to the validator.
+         */
+
+        this.validating = field;
 
         /*
          * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
@@ -265,6 +274,18 @@
             if (parts) {
                 method = parts[1];
                 param = parts[2];
+            }
+
+            /*
+             * If the rule starts with !, only validate if not empty.
+             */
+
+            if (method[0] === '!') {
+              if (!field.value || field.value === '' || field.value === undefined) {
+                continue;
+              }
+              // Strip the ! and carry on
+              method = method.substring(1, method.length);
             }
 
             /*
