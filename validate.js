@@ -277,6 +277,18 @@
             }
 
             /*
+             * If the rule starts with !, only validate if not empty.
+             */
+
+            if (method[0] === '!') {
+              if (!field.value || field.value === '' || field.value === undefined) {
+                continue;
+              }
+              // Strip the ! and carry on
+              method = method.substring(1, method.length);
+            }
+
+            /*
              * If the hook is defined, run it to find any validation errors
              */
 
