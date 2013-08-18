@@ -14,29 +14,29 @@
 
     var defaults = {
         messages: {
-            required: 'The %s field is required.',
-            matches: 'The %s field does not match the %s field.',
-            default: 'The %s field is still set to default, please change.',
-            valid_email: 'The %s field must contain a valid email address.',
-            valid_emails: 'The %s field must contain all valid email addresses.',
-            min_length: 'The %s field must be at least %s characters in length.',
-            max_length: 'The %s field must not exceed %s characters in length.',
-            exact_length: 'The %s field must be exactly %s characters in length.',
-            greater_than: 'The %s field must contain a number greater than %s.',
-            less_than: 'The %s field must contain a number less than %s.',
-            alpha: 'The %s field must only contain alphabetical characters.',
-            alpha_numeric: 'The %s field must only contain alpha-numeric characters.',
-            alpha_dash: 'The %s field must only contain alpha-numeric characters, underscores, and dashes.',
-            numeric: 'The %s field must contain only numbers.',
-            integer: 'The %s field must contain an integer.',
-            decimal: 'The %s field must contain a decimal number.',
-            is_natural: 'The %s field must contain only positive numbers.',
-            is_natural_no_zero: 'The %s field must contain a number greater than zero.',
-            valid_ip: 'The %s field must contain a valid IP.',
-            valid_base64: 'The %s field must contain a base64 string.',
-            valid_credit_card: 'The %s field must contain a valid credit card number.',
-            is_file_type: 'The %s field must contain only %s files.',
-            valid_url: 'The %s field must contain a valid URL.'
+            "required": 'The %s field is required.',
+            "matches": 'The %s field does not match the %s field.',
+            "default": 'The %s field is still set to default, please change.',
+            "valid_email": 'The %s field must contain a valid email address.',
+            "valid_emails": 'The %s field must contain all valid email addresses.',
+            "min_length": 'The %s field must be at least %s characters in length.',
+            "max_length": 'The %s field must not exceed %s characters in length.',
+            "exact_length": 'The %s field must be exactly %s characters in length.',
+            "greater_than": 'The %s field must contain a number greater than %s.',
+            "less_than": 'The %s field must contain a number less than %s.',
+            "alpha": 'The %s field must only contain alphabetical characters.',
+            "alpha_numeric": 'The %s field must only contain alpha-numeric characters.',
+            "alpha_dash": 'The %s field must only contain alpha-numeric characters, underscores, and dashes.',
+            "numeric": 'The %s field must contain only numbers.',
+            "integer": 'The %s field must contain an integer.',
+            "decimal": 'The %s field must contain a decimal number.',
+            "is_natural": 'The %s field must contain only positive numbers.',
+            "is_natural_no_zero": 'The %s field must contain a number greater than zero.',
+            "valid_ip": 'The %s field must contain a valid IP.',
+            "valid_base64": 'The %s field must contain a base64 string.',
+            "valid_credit_card": 'The %s field must contain a valid credit card number.',
+            "is_file_type": 'The %s field must contain only %s files.',
+            "valid_url": 'The %s field must contain a valid URL.'
         },
         callback: function(errors) {
 
@@ -329,7 +329,7 @@
      */
 
     FormValidator.prototype._hooks = {
-        required: function(field) {
+        "required": function(field) {
             var value = field.value;
 
             if ((field.type === 'checkbox') || (field.type === 'radio')) {
@@ -339,11 +339,11 @@
             return (value !== null && value !== '');
         },
         
-        default: function(field, defaultName){
+        "default": function(field, defaultName){
             return field.value !== defaultName;
         },
 
-        matches: function(field, matchName) {
+        "matches": function(field, matchName) {
             var el = this.form[matchName];
 
             if (el) {
@@ -353,11 +353,11 @@
             return false;
         },
 
-        valid_email: function(field) {
+        "valid_email": function(field) {
             return emailRegex.test(field.value);
         },
 
-        valid_emails: function(field) {
+        "valid_emails": function(field) {
             var result = field.value.split(",");
 
             for (var i = 0; i < result.length; i++) {
@@ -369,7 +369,7 @@
             return true;
         },
 
-        min_length: function(field, length) {
+        "min_length": function(field, length) {
             if (!numericRegex.test(length)) {
                 return false;
             }
@@ -377,7 +377,7 @@
             return (field.value.length >= parseInt(length, 10));
         },
 
-        max_length: function(field, length) {
+        "max_length": function(field, length) {
             if (!numericRegex.test(length)) {
                 return false;
             }
@@ -385,7 +385,7 @@
             return (field.value.length <= parseInt(length, 10));
         },
 
-        exact_length: function(field, length) {
+        "exact_length": function(field, length) {
             if (!numericRegex.test(length)) {
                 return false;
             }
@@ -393,7 +393,7 @@
             return (field.value.length === parseInt(length, 10));
         },
 
-        greater_than: function(field, param) {
+        "greater_than": function(field, param) {
             if (!decimalRegex.test(field.value)) {
                 return false;
             }
@@ -401,7 +401,7 @@
             return (parseFloat(field.value) > parseFloat(param));
         },
 
-        less_than: function(field, param) {
+        "less_than": function(field, param) {
             if (!decimalRegex.test(field.value)) {
                 return false;
             }
@@ -409,51 +409,51 @@
             return (parseFloat(field.value) < parseFloat(param));
         },
 
-        alpha: function(field) {
+        "alpha": function(field) {
             return (alphaRegex.test(field.value));
         },
 
-        alpha_numeric: function(field) {
+        "alpha_numeric": function(field) {
             return (alphaNumericRegex.test(field.value));
         },
 
-        alpha_dash: function(field) {
+        "alpha_dash": function(field) {
             return (alphaDashRegex.test(field.value));
         },
 
-        numeric: function(field) {
+        "numeric": function(field) {
             return (numericRegex.test(field.value));
         },
 
-        integer: function(field) {
+        "integer": function(field) {
             return (integerRegex.test(field.value));
         },
 
-        decimal: function(field) {
+        "decimal": function(field) {
             return (decimalRegex.test(field.value));
         },
 
-        is_natural: function(field) {
+        "is_natural": function(field) {
             return (naturalRegex.test(field.value));
         },
 
-        is_natural_no_zero: function(field) {
+        "is_natural_no_zero": function(field) {
             return (naturalNoZeroRegex.test(field.value));
         },
 
-        valid_ip: function(field) {
+        "valid_ip": function(field) {
             return (ipRegex.test(field.value));
         },
 
-        valid_base64: function(field) {
+        "valid_base64": function(field) {
             return (base64Regex.test(field.value));
         },
 
-        valid_url: function(field) {
+        "valid_url": function(field) {
             return (urlRegex.test(field.value));
         },
 
-        valid_credit_card: function(field){
+        "valid_credit_card": function(field){
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
             if (!numericDashRegex.test(field.value)) return false;
@@ -476,7 +476,7 @@
             return (nCheck % 10) === 0;
         },
 
-        is_file_type: function(field,type) {
+        "is_file_type": function(field,type) {
             if (field.type !== 'file') {
                 return true;
             }
