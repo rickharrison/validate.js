@@ -238,15 +238,9 @@
      */
 
     FormValidator.prototype._validateField = function(field) {
-        var rules = field.rules.split('|');
-
-        /*
-         * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
-         */
-
-        if ( (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) && (field.rules.indexOf('callback_') === -1 || field.value === null) ) {
-            return;
-        }
+        var rules = field.rules.split('|'),
+            indexOfRequired = field.rules.indexOf('required'),
+            isEmpty = (!field.value || field.value === '' || field.value === undefined);
 
         /*
          * Run through the rules and execute the validation methods as needed
@@ -259,12 +253,25 @@
                 parts = ruleRegex.exec(method);
 
             /*
+             * If this field is not required and the value is empty, continue on to the next rule unless it's a callback.
+             * This ensures that a callback will always be called but other rules will be skipped.
+             */
+
+            if (indexOfRequired === -1 && method.indexOf('!callback_') === -1 && isEmpty) {
+                continue;
+            }
+
+            /*
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
 
             if (parts) {
                 method = parts[1];
                 param = parts[2];
+            }
+            
+            if (method.charAt(0) === '!') {
+                method = method.substring(1, method.length);
             }
 
             /*
