@@ -123,7 +123,7 @@
     attributeValue = function (element, attributeName) {
         var i;
 
-        if ((element.length > 0) && (element[0].type === 'radio')) {
+        if ((element.length > 0) && (element[0].type === 'radio' || element[0].type === 'checkbox')) {
             for (i = 0; i < element.length; i++) {
                 if (element[i].checked) {
                     return element[i][attributeName];
