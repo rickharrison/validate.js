@@ -16,7 +16,7 @@
         messages: {
             required: 'The %s field is required.',
             matches: 'The %s field does not match the %s field.',
-            default: 'The %s field is still set to default, please change.',
+            "default": 'The %s field is still set to default, please change.',
             valid_email: 'The %s field must contain a valid email address.',
             valid_emails: 'The %s field must contain all valid email addresses.',
             min_length: 'The %s field must be at least %s characters in length.',
@@ -339,7 +339,7 @@
             return (value !== null && value !== '');
         },
         
-        default: function(field, defaultName){
+        "default": function(field, defaultName){
             return field.value !== defaultName;
         },
 
