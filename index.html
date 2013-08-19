@@ -168,22 +168,28 @@ var validator = new FormValidator('example_form', [{
     <h3><span>Custom Validation Rules</span></h3>
     
     <div class="section">
-        <p>validate.js supports the ability for you to include your own validation rules. This will allow you to extend validate.js to suit your needs. A common example of this would be checking if an email is unique.</p>
+        <p>validate.js supports the ability for you to include your own validation rules. This will allow you to extend validate.js to suit your needs. A common example of this would be checking the strength of a password.</p>
         
         <p>First, you need to add another rule to the field. It must always be prefaced with "callback_"</p>
         
-        <pre class="inline">rules: 'required|callback_check_email'</pre>
+        <pre class="inline">rules: 'required|callback_check_password'</pre>
         
         <p>Then you must call <tt>registerCallback</tt> on your instance of the <tt>FormValidator</tt> with the name of your custom rule and a function taking one parameter. This function will be called with one argument, the value of the field. If the value passes your custom validation, return true, otherwise return false. You can set a message for this rule using the <tt>setMessage</tt> method as described below.</p>
         
-        <pre class="inline">validator.registerCallback('check_email', function(value) {
-    if (emailIsUnique(value)) {
+        <pre class="inline">validator.registerCallback('check_password', function(value) {
+    if (passwordIsStrong(value)) {
         return true;
     }
     
     return false;
 })
-.setMessage('check_email', 'That email is already taken. Please choose another.');</pre>
+.setMessage('check_password', 'Please choose a stronger password using at least 1 number.');</pre>
+
+        <p><b>Callbacks behave according to the following rules:</b><br /><br />
+            #1. If the required rule is present, a callback will be fired once all other validation rules pass.<br />
+            #2. If the field is not required and it is empty, the callback will not be called unless condition #3 is met.<br />
+            #3. A callback will always be called if it is preceded by an '!' i.e. rules: '!callback_myCustomCallback'<br /><br />
+        </p>
     </div>
     
     <h3><span>Available Methods</span></h3>
@@ -377,6 +383,16 @@ var validator = new FormValidator('example_form', [{
     </table>
     
     <h3><span>Release Notes</span></h3>
+
+    <h4>1.3 - 08/18/13</h4>
+
+    <ul style="clear:both;">
+        <li><b>There has been an API-breaking change made to callback behavior:</b><br /><br />
+            #1. If the required rule is present, a callback will be fired once all other validation rules pass.<br />
+            #2. If the field is not required and it is empty, the callback will not be called unless condition #3 is met.<br />
+            #3. A callback will always be called if it is preceded by an '!' i.e. rules: '!callback_myCustomCallback'<br /><br /></li>
+        <li>Fixed an issue where multiple checkboxes could not be validated.</li>
+    </ul>
 
     <h4>1.2.2 - 03/27/13</h4>
 
