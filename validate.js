@@ -1,5 +1,5 @@
 /*
- * validate.js 1.2.2
+ * validate.js 1.3
  * Copyright (c) 2013 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
@@ -16,6 +16,7 @@
         messages: {
             required: 'The %s field is required.',
             matches: 'The %s field does not match the %s field.',
+            "default": 'The %s field is still set to default, please change.',
             valid_email: 'The %s field must contain a valid email address.',
             valid_emails: 'The %s field must contain all valid email addresses.',
             min_length: 'The %s field must be at least %s characters in length.',
@@ -33,7 +34,7 @@
             is_natural_no_zero: 'The %s field must contain a number greater than zero.',
             valid_ip: 'The %s field must contain a valid IP.',
             valid_base64: 'The %s field must contain a base64 string.',
-            valid_credit_card: 'The %s field must contain a vaild credit card number',
+            valid_credit_card: 'The %s field must contain a valid credit card number.',
             is_file_type: 'The %s field must contain only %s files.',
             valid_url: 'The %s field must contain a valid URL.'
         },
@@ -64,7 +65,7 @@
     /*
      * The exposed public object to validate a form:
      *
-     * @param formName - String - The name attribute of the form (i.e. <form name="myForm"></form>)
+     * @param formNameOrNode - String - The name attribute of the form (i.e. <form name="myForm"></form>) or node of the form element
      * @param fields - Array - [{
      *     name: The name of the element (i.e. <input name="myField" />)
      *     display: 'Field Name'
@@ -75,11 +76,11 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formName, fields, callback) {
+    var FormValidator = function(formNameOrNode, fields, callback) {
         this.callback = callback || defaults.callback;
         this.errors = [];
         this.fields = {};
-        this.form = document.forms[formName] || {};
+        this.form = this._formByNameOrNode(formNameOrNode) || {};
         this.messages = {};
         this.handlers = {};
 
@@ -87,7 +88,7 @@
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
-            if (!field.name || !field.rules) {
+            if ((!field.name && !field.names) || !field.rules) {
                 continue;
             }
 
@@ -95,15 +96,13 @@
              * Build the master fields array that has all the information needed to validate
              */
 
-            this.fields[field.name] = {
-                name: field.name,
-                display: field.display || field.name,
-                rules: field.rules,
-                id: null,
-                type: null,
-                value: null,
-                checked: null
-            };
+            if (field.names) {
+                for (var j = 0; j < field.names.length; j++) {
+                    this._addField(field, field.names[j]);
+                }
+            } else {
+                this._addField(field, field.name);
+            }
         }
 
         /*
@@ -124,7 +123,7 @@
     attributeValue = function (element, attributeName) {
         var i;
 
-        if ((element.length > 0) && (element[0].type === 'radio')) {
+        if ((element.length > 0) && (element[0].type === 'radio' || element[0].type === 'checkbox')) {
             for (i = 0; i < element.length; i++) {
                 if (element[i].checked) {
                     return element[i][attributeName];
@@ -165,6 +164,32 @@
 
     /*
      * @private
+     * Determines if a form dom node was passed in or just a string representing the form name
+     */
+
+    FormValidator.prototype._formByNameOrNode = function(formNameOrNode) {
+        return (typeof formNameOrNode === 'object') ? formNameOrNode : document.forms[formNameOrNode];
+    };
+
+    /*
+     * @private
+     * Adds a file to the master fields array
+     */
+
+    FormValidator.prototype._addField = function(field, nameValue)  {
+        this.fields[nameValue] = {
+            name: nameValue,
+            display: field.display || nameValue,
+            rules: field.rules,
+            id: null,
+            type: null,
+            value: null,
+            checked: null
+        };
+    };
+
+    /*
+     * @private
      * Runs the validation when the form is submitted.
      */
 
@@ -181,11 +206,11 @@
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
-                    
+
                     /*
                      * Run through the rules for each field.
                      */
-                    
+
                     this._validateField(field);
                 }
             }
@@ -213,15 +238,9 @@
      */
 
     FormValidator.prototype._validateField = function(field) {
-        var rules = field.rules.split('|');
-
-        /*
-         * If the value is null and not required, we don't need to run through validation, unless the rule is a callback, but then only if the value is not null
-         */
-        
-        if ( (field.rules.indexOf('required') === -1 && (!field.value || field.value === '' || field.value === undefined)) && (field.rules.indexOf('callback_') === -1 || field.value === null) ) {
-            return;
-        }
+        var rules = field.rules.split('|'),
+            indexOfRequired = field.rules.indexOf('required'),
+            isEmpty = (!field.value || field.value === '' || field.value === undefined);
 
         /*
          * Run through the rules and execute the validation methods as needed
@@ -234,12 +253,25 @@
                 parts = ruleRegex.exec(method);
 
             /*
+             * If this field is not required and the value is empty, continue on to the next rule unless it's a callback.
+             * This ensures that a callback will always be called but other rules will be skipped.
+             */
+
+            if (indexOfRequired === -1 && method.indexOf('!callback_') === -1 && isEmpty) {
+                continue;
+            }
+
+            /*
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
 
             if (parts) {
                 method = parts[1];
                 param = parts[2];
+            }
+            
+            if (method.charAt(0) === '!') {
+                method = method.substring(1, method.length);
             }
 
             /*
@@ -255,7 +287,7 @@
                 method = method.substring(9, method.length);
 
                 if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value]) === false) {
+                    if (this.handlers[method].apply(this, [field.value, param]) === false) {
                         failed = true;
                     }
                 }
@@ -305,6 +337,10 @@
             }
 
             return (value !== null && value !== '');
+        },
+        
+        "default": function(field, defaultName){
+            return field.value !== defaultName;
         },
 
         matches: function(field, matchName) {
@@ -386,7 +422,7 @@
         },
 
         numeric: function(field) {
-            return (decimalRegex.test(field.value));
+            return (numericRegex.test(field.value));
         },
 
         integer: function(field) {
@@ -416,7 +452,7 @@
         valid_url: function(field) {
             return (urlRegex.test(field.value));
         },
-        
+
         valid_credit_card: function(field){
             // Luhn Check Code from https://gist.github.com/4075533
             // accept only digits, dashes or spaces
