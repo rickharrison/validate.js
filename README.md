@@ -41,6 +41,37 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
         }
     });
 
+### Tooltips
+
+If you need to have tooltips (e.g. overlays) alongside error validation you can just create two instances of the FormValidator:
+
+    var validator = new FormValidator('example_form', [{
+        name: 'req',
+        display: 'required',
+        rules: 'required'
+    }], function(errors) {
+        if (errors.length > 0) {
+            // Show the errors
+        }
+    });
+
+    var tips = new FormValidator('example_form', [{
+        name: 'req',
+        display: 'required',
+        rules: 'required'
+    }], function(tips) {
+        if (tips.length > 0) {
+            // Show the tips
+        }
+    });
+
+### onBlur validation
+
+    document.getElementById('address').onblur = function() {
+        validator.validateField('address');
+    };
+
+
 ## Documentation
 
 You can view everything at http://rickharrison.github.com/validate.js
