@@ -11,7 +11,6 @@
      * If you would like an application-wide config, change these defaults.
      * Otherwise, use the setMessage() function to configure form specific messages.
      */
-
     var defaults = {
         messages: {
             required: 'The %s field is required.',
@@ -46,7 +45,6 @@
     /*
      * Define the regular expressions that will be used
      */
-
     var ruleRegex = /^(.+?)\[(.+)\]$/,
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
@@ -75,7 +73,6 @@
      *     @argument errors - An array of validation errors
      *     @argument event - The javascript event
      */
-
     var FormValidator = function(formNameOrNode, fields, callback) {
         this.callback = callback || defaults.callback;
         this.errors = [];
@@ -95,7 +92,6 @@
             /*
              * Build the master fields array that has all the information needed to validate
              */
-
             if (field.names) {
                 for (var j = 0; j < field.names.length; j++) {
                     this._addField(field, field.names[j]);
@@ -108,7 +104,6 @@
         /*
          * Attach an event callback for the form submission
          */
-
         var _onsubmit = this.form.onsubmit;
 
         this.form.onsubmit = (function(that) {
@@ -140,7 +135,6 @@
      * @public
      * Sets a custom message for one of the rules
      */
-
     FormValidator.prototype.setMessage = function(rule, message) {
         this.messages[rule] = message;
 
@@ -152,7 +146,6 @@
      * @public
      * Registers a callback for a custom rule (i.e. callback_username_check)
      */
-
     FormValidator.prototype.registerCallback = function(name, handler) {
         if (name && typeof name === 'string' && handler && typeof handler === 'function') {
             this.handlers[name] = handler;
@@ -163,10 +156,25 @@
     };
 
     /*
+     * @public
+     * Validates a single field
+     */
+    FormValidator.prototype.validateField = function(key) {
+        this.errors = [];
+
+        this._buildAndValidateField.call(this, key);
+
+        if (typeof this.callback === 'function') {
+            this.callback(this.errors, null);
+        }
+
+        return true;
+    };
+
+    /*
      * @private
      * Determines if a form dom node was passed in or just a string representing the form name
      */
-
     FormValidator.prototype._formByNameOrNode = function(formNameOrNode) {
         return (typeof formNameOrNode === 'object') ? formNameOrNode : document.forms[formNameOrNode];
     };
@@ -175,7 +183,6 @@
      * @private
      * Adds a file to the master fields array
      */
-
     FormValidator.prototype._addField = function(field, nameValue)  {
         this.fields[nameValue] = {
             name: nameValue,
@@ -190,30 +197,37 @@
 
     /*
      * @private
+     * Builds the field object and runs the validation on it.
+     */
+    FormValidator.prototype._buildAndValidateField = function(key) {
+        if (this.fields.hasOwnProperty(key)) {
+            var field = this.fields[key] || {},
+                element = this.form[field.name];
+
+            if (element && element !== undefined) {
+                field.id = attributeValue(element, 'id');
+                field.type = (element.length > 0) ? element[0].type : element.type;
+                field.value = attributeValue(element, 'value');
+                field.checked = attributeValue(element, 'checked');
+
+                /*
+                 * Run through the rules for each field.
+                 */
+
+                this._validateField(field);
+            }
+        }
+    }
+
+    /*
+     * @private
      * Runs the validation when the form is submitted.
      */
-
     FormValidator.prototype._validateForm = function(evt) {
         this.errors = [];
 
         for (var key in this.fields) {
-            if (this.fields.hasOwnProperty(key)) {
-                var field = this.fields[key] || {},
-                    element = this.form[field.name];
-
-                if (element && element !== undefined) {
-                    field.id = attributeValue(element, 'id');
-                    field.type = (element.length > 0) ? element[0].type : element.type;
-                    field.value = attributeValue(element, 'value');
-                    field.checked = attributeValue(element, 'checked');
-
-                    /*
-                     * Run through the rules for each field.
-                     */
-
-                    this._validateField(field);
-                }
-            }
+            this._buildAndValidateField.call(this, key);
         }
 
         if (typeof this.callback === 'function') {
@@ -236,7 +250,6 @@
      * @private
      * Looks at the fields value and evaluates it against the given rules
      */
-
     FormValidator.prototype._validateField = function(field) {
         var rules = field.rules.split('|'),
             indexOfRequired = field.rules.indexOf('required'),
@@ -245,7 +258,6 @@
         /*
          * Run through the rules and execute the validation methods as needed
          */
-
         for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
             var method = rules[i],
                 param = null,
@@ -256,7 +268,6 @@
              * If this field is not required and the value is empty, continue on to the next rule unless it's a callback.
              * This ensures that a callback will always be called but other rules will be skipped.
              */
-
             if (indexOfRequired === -1 && method.indexOf('!callback_') === -1 && isEmpty) {
                 continue;
             }
@@ -264,7 +275,6 @@
             /*
              * If the rule has a parameter (i.e. matches[param]) split it out
              */
-
             if (parts) {
                 method = parts[1];
                 param = parts[2];
@@ -277,9 +287,9 @@
             /*
              * If the hook is defined, run it to find any validation errors
              */
-
             if (typeof this._hooks[method] === 'function') {
                 if (!this._hooks[method].apply(this, [field, param])) {
+                    console.log('fin qui ci arriva');
                     failed = true;
                 }
             } else if (method.substring(0, 9) === 'callback_') {
@@ -296,7 +306,6 @@
             /*
              * If the hook failed, add a message to the errors array
              */
-
             if (failed) {
                 // Make sure we have a message for this rule
                 var source = this.messages[method] || defaults.messages[method],
@@ -327,7 +336,6 @@
      * @private
      * Object containing all of the validation hooks
      */
-
     FormValidator.prototype._hooks = {
         required: function(field) {
             var value = field.value;
