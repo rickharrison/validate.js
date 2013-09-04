@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://annunci.ebay.it.local" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>file:///Users/jromei/workspace/validate.js/tests/form.html?title=&amp;body=&amp;attr_price=&amp;name=&amp;website=&amp;attr_category=</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field is required.<br />The Descrizione field is required.<br />The Prezzo field is required.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>name=title</td>
+	<td>abcdefg</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field must be at least 8 characters in length.<br />The Descrizione field is required.<br />The Prezzo field is required.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>name=title</td>
+	<td>abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field must not exceed 64 characters in length.<br />The Descrizione field is required.<br />The Prezzo field is required.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>abcdefgh</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Descrizione field is required.<br />The Prezzo field is required.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>oink oink</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Prezzo field is required.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>name=attr_price</td>
+	<td>1200</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>name=name</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Nome field must be at least 2 characters in length.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>name=name</td>
+	<td>abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Nome field must not exceed 50 characters in length.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=name</td>
+	<td>jacopo</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>name=website</td>
+	<td>www.donuts</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Sito Web field must contain a valid URL.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=website</td>
+	<td>www.donuts.commo</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Sito Web field must contain a valid URL.<br />The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=website</td>
+	<td>http://www.donuts.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Categoria field is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=attr_category</td>
+	<td>1234567</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>12345678</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>06 12345678</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>+39 06 12345678</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>www.ciao.it</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>http://www.ciao.it</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>https://www.ciao.it</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>ciaone.it</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>joe@example.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Titolo field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=title</td>
+	<td>Una piccozza</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>Scrivetemi qui ortega@ciao.it</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Descrizione field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>Chiamatemi al 328 1234567, ok?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Descrizione field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>Tenimm tutt cose, tenimm gabbana ralph lauren Armani Gucci</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>Il campo Descrizione contiene alcune parole sospette.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>Che divertente questa picozza arredamenti, raviolificio, raviolifici, discoteca</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>Il campo Descrizione contiene alcune parole sospette.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>Una gran bella piccozza del 1984</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=name</td>
+	<td>Jacopo 328 0952666</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Nome field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=name</td>
+	<td>Jacopo www.sviluppoagile.it</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Nome field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=name</td>
+	<td>Jacopo</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=attr_category</td>
+	<td>123666321</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>Hai raggiunto il limite massimo di annunci in questa categoria per il tuo account premium.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=attr_category</td>
+	<td>987654321</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>Hai raggiunto il limite massimo di annunci in questa categoria per il tuo account premium.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=body</td>
+	<td>328 0952666</td>
+</tr>
+<tr>
+	<td>fireEvent</td>
+	<td>name=body</td>
+	<td>blur</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=errors</td>
+	<td>The Descrizione field non deve essere un numero di telefono, una mail o un indirizzo web.</td>
+</tr>
+</tbody></table>
+</body>
+</html>
