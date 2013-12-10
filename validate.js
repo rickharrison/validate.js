@@ -97,7 +97,7 @@
              */
 
             if (field.names) {
-                for (var j = 0; j < field.names.length; j++) {
+                for (var j = 0, fieldNamesLength = field.names.length; j < fieldNamesLength; j++) {
                     this._addField(field, field.names[j]);
                 }
             } else {
@@ -124,7 +124,7 @@
         var i;
 
         if ((element.length > 0) && (element[0].type === 'radio' || element[0].type === 'checkbox')) {
-            for (i = 0; i < element.length; i++) {
+            for (i = 0, elementLength = element.length; i < elementLength; i++) {
                 if (element[i].checked) {
                     return element[i][attributeName];
                 }
@@ -360,7 +360,7 @@
         valid_emails: function(field) {
             var result = field.value.split(",");
 
-            for (var i = 0; i < result.length; i++) {
+            for (var i = 0, resultLength = result.length; i < resultLength; i++) {
                 if (!emailRegex.test(result[i])) {
                     return false;
                 }
