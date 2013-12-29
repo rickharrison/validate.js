@@ -1,6 +1,6 @@
 /*
  * validate.js 1.3.1
- * Copyright (c) 2011 Rick Harrison, http://rickharrison.me
+ * Copyright (c) 2011 - 2014 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
  * http://rickharrison.github.com/validate.js
@@ -269,7 +269,7 @@
                 method = parts[1];
                 param = parts[2];
             }
-            
+
             if (method.charAt(0) === '!') {
                 method = method.substring(1, method.length);
             }
@@ -338,7 +338,7 @@
 
             return (value !== null && value !== '');
         },
-        
+
         "default": function(field, defaultName){
             return field.value !== defaultName;
         },
