@@ -299,7 +299,7 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method],
+                var source = this.messages[field.name + '.' + method] || this.messages[method] || defaults.messages[method],
                     message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
