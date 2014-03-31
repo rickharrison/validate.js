@@ -83,6 +83,7 @@
         this.form = this._formByNameOrNode(formNameOrNode) || {};
         this.messages = {};
         this.handlers = {};
+        this.conditionals = {};
 
         for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
             var field = fields[i];
@@ -163,6 +164,20 @@
     };
 
     /*
+     * @public
+     * Registers a conditional for a custom 'depends' rule
+     */
+
+    FormValidator.prototype.registerConditional = function(name, conditional) {
+        if (name && typeof name === 'string' && conditional && typeof conditional === 'function') {
+            this.conditionals[name] = conditional;
+        }
+
+        // return this for chaining
+        return this;
+    };
+
+    /*
      * @private
      * Determines if a form dom node was passed in or just a string representing the form name
      */
@@ -181,6 +196,7 @@
             name: nameValue,
             display: field.display || nameValue,
             rules: field.rules,
+            depends: field.depends,
             id: null,
             type: null,
             value: null,
@@ -209,9 +225,21 @@
 
                     /*
                      * Run through the rules for each field.
+                     * If the field has a depends conditional, only validate the field
+                     * if it passes the custom function
                      */
 
-                    this._validateField(field);
+                    if (field.depends && typeof field.depends === "function") {
+                        if (field.depends.call(this, field)) {
+                            this._validateField(field);
+                        }
+                    } else if (field.depends && typeof field.depends === "string") {
+                        if (this.conditionals[field.depends].call(this,field)) {
+                            this._validateField(field);
+                        }
+                    } else {
+                        this._validateField(field);
+                    }
                 }
             }
         }
