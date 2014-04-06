@@ -233,7 +233,7 @@
                         if (field.depends.call(this, field)) {
                             this._validateField(field);
                         }
-                    } else if (field.depends && typeof field.depends === "string") {
+                    } else if (field.depends && typeof field.depends === "string" && this.conditionals[field.depends]) {
                         if (this.conditionals[field.depends].call(this,field)) {
                             this._validateField(field);
                         }
