@@ -71,6 +71,7 @@
         <li>Customizable messages</li>
         <li>Supply your own validation callbacks for custom rules</li>
         <li>Chainable customization methods for ease of declaration</li>
+        <li>Conditionally validate certain form fields</li>
         <li>Works in all major browsers (even IE6!)</li>
         <li>Modeled off the <a href="http://codeigniter.com">CodeIgniter</a> form validation API</li>
     </ul>
@@ -101,7 +102,10 @@ var validator = new FormValidator('example_form', [{
     rules: 'required|matches[password]'
 }, {
     name: 'email',
-    rules: 'valid_email'
+    rules: 'valid_email',
+    depends: function() {
+        return Math.random() > .5;
+    }
 }, {
     name: 'minlength',
     display: 'min length',
@@ -120,7 +124,7 @@ var validator = new FormValidator('example_form', [{
         
         <pre>&lt;form name=&quot;example_form&quot;&gt;&lt;/form&gt;</pre>
         
-        <p>An array of <b>fields</b> will be used to perform validation on submission of the form. The array must contain objects containing three properties:</p>
+        <p>An array of <b>fields</b> will be used to perform validation on submission of the form. The array must contain objects containing these properties:</p>
         
         <ul>
             <li>
@@ -134,6 +138,13 @@ var validator = new FormValidator('example_form', [{
             <li>
                 <p>rules (required) - One or more rules, which are piped together.</p>
                 <p>Example - <tt>required|min_length[8]|matches[password_confirm]</tt></p>
+            </li>
+            <li>
+                <p>depends (optional) - An function that runs before the field is validated. If the function returns false, the field is never validated against the declared rules.</p>
+                <pre class="inline">depends: function(field) {
+            return Math.random() > .5;
+}
+                </pre>
             </li>
         </ul>
         
@@ -211,6 +222,20 @@ var validator = new FormValidator('example_form', [{
     }
     
     return false;
+});</pre>
+
+        <h4>registerConditional</h4><tt>validator.registerConditional(name, callback)</tt>
+
+        <p style="clear:both">An alternate syntax for declaring <b>depends</b> functions, which determine whether or not to validate a given field.
+
+        <pre class="inline">{
+    name: 'first_name',
+    rules: 'required',
+    depends: 'checkForRandomNumber'
+}</pre>
+
+        <pre class="inline">validator.registerConditional('checkForRandomNumber', function(field) {
+    return Math.random() > .5;
 });</pre>
     </div>
     
