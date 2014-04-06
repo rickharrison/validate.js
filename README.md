@@ -9,6 +9,7 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
 - Customizable Messages
 - Supply your own validation callbacks for custom rules
 - Chainable customization methods for ease of declaration
+- Conditionally validate certain form fields
 - Works in all major browsers, (even IE6!)
 - Modeled off the CodeIgniter form validation API
 
@@ -30,7 +31,10 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
         rules: 'required|matches[password]'
     }, {
         name: 'email',
-        rules: 'valid_email'
+        rules: 'valid_email',
+        depends: function() {
+            return Math.random() > .5;
+        }
     }, {
         name: 'minlength',
         display: 'min length',
