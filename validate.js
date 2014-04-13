@@ -1,6 +1,6 @@
 /*
- * validate.js 1.3
- * Copyright (c) 2013 Rick Harrison, http://rickharrison.me
+ * validate.js 1.4
+ * Copyright (c) 2011 - 2014 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
  * http://rickharrison.github.com/validate.js
@@ -83,6 +83,7 @@
         this.form = this._formByNameOrNode(formNameOrNode) || {};
         this.messages = {};
         this.handlers = {};
+        this.conditionals = {};
 
         for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
             var field = fields[i];
@@ -97,7 +98,7 @@
              */
 
             if (field.names) {
-                for (var j = 0; j < field.names.length; j++) {
+                for (var j = 0, fieldNamesLength = field.names.length; j < fieldNamesLength; j++) {
                     this._addField(field, field.names[j]);
                 }
             } else {
@@ -124,7 +125,7 @@
         var i;
 
         if ((element.length > 0) && (element[0].type === 'radio' || element[0].type === 'checkbox')) {
-            for (i = 0; i < element.length; i++) {
+            for (i = 0, elementLength = element.length; i < elementLength; i++) {
                 if (element[i].checked) {
                     return element[i][attributeName];
                 }
@@ -163,6 +164,20 @@
     };
 
     /*
+     * @public
+     * Registers a conditional for a custom 'depends' rule
+     */
+
+    FormValidator.prototype.registerConditional = function(name, conditional) {
+        if (name && typeof name === 'string' && conditional && typeof conditional === 'function') {
+            this.conditionals[name] = conditional;
+        }
+
+        // return this for chaining
+        return this;
+    };
+
+    /*
      * @private
      * Determines if a form dom node was passed in or just a string representing the form name
      */
@@ -181,6 +196,7 @@
             name: nameValue,
             display: field.display || nameValue,
             rules: field.rules,
+            depends: field.depends,
             id: null,
             type: null,
             value: null,
@@ -209,9 +225,21 @@
 
                     /*
                      * Run through the rules for each field.
+                     * If the field has a depends conditional, only validate the field
+                     * if it passes the custom function
                      */
 
-                    this._validateField(field);
+                    if (field.depends && typeof field.depends === "function") {
+                        if (field.depends.call(this, field)) {
+                            this._validateField(field);
+                        }
+                    } else if (field.depends && typeof field.depends === "string" && this.conditionals[field.depends]) {
+                        if (this.conditionals[field.depends].call(this,field)) {
+                            this._validateField(field);
+                        }
+                    } else {
+                        this._validateField(field);
+                    }
                 }
             }
         }
@@ -269,7 +297,7 @@
                 method = parts[1];
                 param = parts[2];
             }
-            
+
             if (method.charAt(0) === '!') {
                 method = method.substring(1, method.length);
             }
@@ -299,7 +327,7 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[method] || defaults.messages[method],
+                var source = this.messages[field.name + '.' + method] || this.messages[method] || defaults.messages[method],
                     message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
@@ -338,7 +366,7 @@
 
             return (value !== null && value !== '');
         },
-        
+
         "default": function(field, defaultName){
             return field.value !== defaultName;
         },
@@ -360,7 +388,7 @@
         valid_emails: function(field) {
             var result = field.value.split(",");
 
-            for (var i = 0; i < result.length; i++) {
+            for (var i = 0, resultLength = result.length; i < resultLength; i++) {
                 if (!emailRegex.test(result[i])) {
                     return false;
                 }
