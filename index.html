@@ -140,11 +140,10 @@ var validator = new FormValidator('example_form', [{
                 <p>Example - <tt>required|min_length[8]|matches[password_confirm]</tt></p>
             </li>
             <li>
-                <p>depends (optional) - An function that runs before the field is validated. If the function returns false, the field is never validated against the declared rules.</p>
+                <p>depends (optional) - A function that runs before the field is validated. If the function returns false, the field is never validated against the declared rules.</p>
                 <pre class="inline">depends: function(field) {
-            return Math.random() > .5;
-}
-                </pre>
+    return Math.random() > .5;
+}</pre>
             </li>
         </ul>
         
@@ -172,8 +171,7 @@ var validator = new FormValidator('example_form', [{
         
         el.innerHTML = errorString;
     }       
-}        
-        </pre>
+}</pre>
     </div>
     
     <h3><span>Custom Validation Rules</span></h3>
@@ -216,7 +214,7 @@ var validator = new FormValidator('example_form', [{
         
         <p style="clear:both;">Used to pair a custom <b>rule</b> in the fields array with a <b>callback</b> to be executed upon validation.</p>
         
-        <pre class="inline">validator.registerCallback('check_email', function(value) {
+        <pre>validator.registerCallback('check_email', function(value) {
     if (emailIsUnique(value)) {
         return true;
     }
