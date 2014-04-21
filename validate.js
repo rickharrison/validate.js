@@ -315,7 +315,7 @@
                 method = method.substring(9, method.length);
 
                 if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value, param]) === false) {
+                    if (this.handlers[method].apply(this, [field.value, param, field]) === false) {
                         failed = true;
                     }
                 }
