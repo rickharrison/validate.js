@@ -198,6 +198,7 @@
             rules: field.rules,
             depends: field.depends,
             id: null,
+            element: null,
             type: null,
             value: null,
             checked: null
@@ -219,6 +220,7 @@
 
                 if (element && element !== undefined) {
                     field.id = attributeValue(element, 'id');
+                    field.element = element;
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
@@ -340,6 +342,7 @@
 
                 this.errors.push({
                     id: field.id,
+                    element: field.element,
                     name: field.name,
                     message: message,
                     rule: method
