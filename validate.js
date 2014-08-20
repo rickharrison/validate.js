@@ -1,5 +1,5 @@
 /*
- * validate.js 1.4
+ * validate.js 1.4.1
  * Copyright (c) 2011 - 2014 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
@@ -51,7 +51,7 @@
         numericRegex = /^[0-9]+$/,
         integerRegex = /^\-?[0-9]+$/,
         decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-        emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
+        emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
         alphaRegex = /^[a-z]+$/i,
         alphaNumericRegex = /^[a-z0-9]+$/i,
         alphaDashRegex = /^[a-z0-9_\-]+$/i,
@@ -198,6 +198,7 @@
             rules: field.rules,
             depends: field.depends,
             id: null,
+            element: null,
             type: null,
             value: null,
             checked: null
@@ -219,6 +220,7 @@
 
                 if (element && element !== undefined) {
                     field.id = attributeValue(element, 'id');
+                    field.element = element;
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
                     field.checked = attributeValue(element, 'checked');
@@ -315,7 +317,7 @@
                 method = method.substring(9, method.length);
 
                 if (typeof this.handlers[method] === 'function') {
-                    if (this.handlers[method].apply(this, [field.value, param]) === false) {
+                    if (this.handlers[method].apply(this, [field.value, param, field]) === false) {
                         failed = true;
                     }
                 }
@@ -340,6 +342,7 @@
 
                 this.errors.push({
                     id: field.id,
+                    element: field.element,
                     name: field.name,
                     message: message,
                     rule: method
