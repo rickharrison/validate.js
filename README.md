@@ -47,10 +47,10 @@ You can view everything at http://rickharrison.github.com/validate.js
 
 ## Browserify
 
-It is published to npm under formvalidate.js
+It is published to npm under validate-js
 
 ```
-npm install formvalidate.js
+npm install validate-js
 ```
 
 ## Plugins
