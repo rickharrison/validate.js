@@ -529,3 +529,10 @@
     window.FormValidator = FormValidator;
 
 })(window, document);
+
+/*
+ * Export as a CommonJS module
+ */
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = FormValidator;
+}
