@@ -1,6 +1,6 @@
 {
   "name": "validate-js",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Lightweight JavaScript form validation library inspired by CodeIgniter.",
   "main": "validate.js",
   "repository": {
