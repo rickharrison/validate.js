@@ -63,3 +63,5 @@ jnhwkim's fork added multi-language support viewable at https://github.com/jnhwk
 
 Chinese - https://github.com/chilijung/validate.js
 
+French - https://github.com/Facyla/validate.js
+
