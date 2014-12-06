@@ -36,7 +36,11 @@
             valid_base64: 'The %s field must contain a base64 string.',
             valid_credit_card: 'The %s field must contain a valid credit card number.',
             is_file_type: 'The %s field must contain only %s files.',
-            valid_url: 'The %s field must contain a valid URL.'
+            valid_url: 'The %s field must contain a valid URL.',
+            greater_than_date: 'The %s field must contain a more recent date than %s.',
+            less_than_date: 'The %s field must contain an older date than %s.',
+            greater_than_or_equal_date: 'The %s field must contain a date that\'s at least as recent as %s.',
+            less_than_or_equal_date: 'The %s field must contain a date that\'s %s or older.'
         },
         callback: function(errors) {
 
@@ -60,7 +64,8 @@
         ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
         base64Regex = /[^a-zA-Z0-9\/\+=]/i,
         numericDashRegex = /^[\d\-\s]+$/,
-        urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+        urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
+        dateRegex = /\d{4}-\d{1,2}-\d{1,2}/;
 
     /*
      * The exposed public object to validate a form:
@@ -354,6 +359,28 @@
         }
     };
 
+    /**
+     * private function _getValidDate: helper function to convert a string date to a Date object
+     * @param date (String) must be in format yyyy-mm-dd or use keyword: today
+     * @returns {Date} returns false if invalid
+     */
+    FormValidator.prototype._getValidDate = function(date) {
+        if (!date.match('today') && !date.match(dateRegex)) {
+            return false;
+        }
+
+        var validDate = new Date(),
+            validDateArray;
+
+        if (!date.match('today')) {
+            validDateArray = date.split('-');
+            validDate.setFullYear(validDateArray[0]);
+            validDate.setMonth(validDateArray[1] - 1);
+            validDate.setDate(validDateArray[2]);
+        }
+        return validDate;
+    };
+
     /*
      * @private
      * Object containing all of the validation hooks
@@ -523,6 +550,50 @@
             }
 
             return inArray;
+        },
+
+        greater_than_date: function (field, date) {
+            var enteredDate = this._getValidDate(field.value),
+                validDate = this._getValidDate(date);
+
+            if (!validDate || !enteredDate) {
+                return false;
+            }
+
+            return enteredDate > validDate;
+        },
+
+        less_than_date: function (field, date) {
+            var enteredDate = this._getValidDate(field.value),
+                validDate = this._getValidDate(date);
+
+            if (!validDate || !enteredDate) {
+                return false;
+            }
+
+            return enteredDate < validDate;
+        },
+
+        greater_than_or_equal_date: function (field, date) {
+            var enteredDate = this._getValidDate(field.value),
+                validDate = this._getValidDate(date);
+
+            if (!validDate || !enteredDate) {
+                return false;
+            }
+
+            return enteredDate >= validDate;
+        },
+
+        less_than_or_equal_date: function (field, date) {
+            var enteredDate = this._getValidDate(field.value),
+                validDate = this._getValidDate(date);
+
+            if (!validDate || !enteredDate) {
+                return false;
+            }
+
+            return enteredDate <= validDate;
         }
     };
 
