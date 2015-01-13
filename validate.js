@@ -416,7 +416,7 @@
         },
 
         valid_emails: function(field) {
-            var result = field.value.split(",");
+            var result = field.value.split(/\s*,\s*/g);
 
             for (var i = 0, resultLength = result.length; i < resultLength; i++) {
                 if (!emailRegex.test(result[i])) {
