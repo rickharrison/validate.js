@@ -119,6 +119,7 @@
 
         this.form.onsubmit = (function(that) {
             return function(evt) {
+                evt = evt || window.event;
                 try {
                     return that._validateForm(evt) && (_onsubmit === undefined || _onsubmit());
                 } catch(e) {}
