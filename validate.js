@@ -139,6 +139,26 @@
             return;
         }
 
+        // Added to check if a required grouped fields have values
+        // Grouped filed example: <select name="degree[]">...</..> (one or more field with name="degree[]" attribute)
+        if ((attributeName == 'value') && (element.length > 0) && (element[0].type === 'select-one')) {
+            var _v = new Array();
+            for (i = 0, elementLength = element.length; i < elementLength; i++) {
+                if(element[i][attributeName] && element[i][attributeName].length > 0){
+                    _v.push(element[i][attributeName]);
+                }else{
+                    return ''; // stop looping, found an empty value! either return all values or nothing
+                }
+            }
+            /**
+             * @return: array of collected values.
+             * @TODO: However, this returned value can be used to check if required
+             * @TODO: field is set or not (when option rules: 'required' for a field). For other rules, returned value
+             * @TODO: need to be handled
+             */
+            return _v;
+        }
+
         return element[attributeName];
     };
 
