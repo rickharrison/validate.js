@@ -95,6 +95,9 @@
 
             // If passed in incorrectly, we need to skip the field.
             if ((!field.name && !field.names) || !field.rules) {
+                console.warn('validate.js: The following field is being skipped due to a misconfiguration:');
+                console.warn(field);
+                console.warn('Check to ensure you have properly configured a name and rules for this field');
                 continue;
             }
 
