@@ -348,16 +348,22 @@
                     }
                 }
 
-                this.errors.push({
+                var existingError;
+                for (var i = 0; i < this.errors.length; i += 1) {
+                    if (field.id === this.errors[i].id) {
+                        existingError = this.errors[i];
+                    }
+                }
+                var errorObject = existingError || {
                     id: field.id,
                     element: field.element,
                     name: field.name,
                     message: message,
+                    messages: [],
                     rule: method
-                });
-
-                // Break out so as to not spam with validation errors (i.e. required and valid_email)
-                break;
+                };
+                errorObject.messages.push(message);
+                if (!existingError) this.errors.push(errorObject);
             }
         }
     };
