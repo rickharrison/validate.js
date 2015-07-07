@@ -82,6 +82,7 @@
      */
 
     var FormValidator = function(formNameOrNode, fields, callback) {
+        if (!fields) throw new Error("new FormValidator(formNameOrNode, fields, callback): fields is undefined");
         this.callback = callback || defaults.callback;
         this.errors = [];
         this.fields = {};
