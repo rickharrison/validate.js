@@ -350,6 +350,7 @@
 
                 this.errors.push({
                     id: field.id,
+                    display: field.display,
                     element: field.element,
                     name: field.name,
                     message: message,
