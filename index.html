@@ -152,10 +152,11 @@ var validator = new FormValidator('example_form', [{
         <ul class="inline">
             <li>
                 <p>errors - An array of errors from the validation object. If the length > 0, the form failed validation</p>
-                <p>This array will contain javascript objects with up to three properties:<br />
+                <p>This array will contain javascript objects with up to four properties:<br />
                 - id: The id attribute of the form element<br />
                 - name: The name attribute of the form element<br />
                 - message: The error message to display<br />
+                - messages: The error message of every failed validation of the given field to display<br />
                 - rule: The rule that prompted this error<br /></p>
             </li>
             <li>event - If the browser supports it, the onsubmit event is passed in.</li>
@@ -406,6 +407,12 @@ var validator = new FormValidator('example_form', [{
     </table>
 
     <h3><span>Release Notes</span></h3>
+
+    <h4>2.0.0 - 09/20/15</h4>
+
+    <ul style="clear:both;">
+        <li>Adds messages property to errors. It contains all of the failed validations.</li>
+    </ul>
 
     <h4>1.4.1 - 08/20/14</h4>
 
