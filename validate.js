@@ -1,6 +1,6 @@
 /*
- * validate.js 1.4.1
- * Copyright (c) 2011 - 2014 Rick Harrison, http://rickharrison.me
+ * validate.js 2.0.0
+ * Copyright (c) 2011 - 2015 Rick Harrison, http://rickharrison.me
  * validate.js is open sourced under the MIT license.
  * Portions of validate.js are inspired by CodeIgniter.
  * http://rickharrison.github.com/validate.js
