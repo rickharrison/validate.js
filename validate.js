@@ -276,7 +276,8 @@
      */
 
     FormValidator.prototype._validateField = function(field) {
-        var rules = field.rules.split('|'),
+        var i, j,
+            rules = field.rules.split('|'),
             indexOfRequired = field.rules.indexOf('required'),
             isEmpty = (!field.value || field.value === '' || field.value === undefined);
 
@@ -284,7 +285,7 @@
          * Run through the rules and execute the validation methods as needed
          */
 
-        for (var i = 0, ruleLength = rules.length; i < ruleLength; i++) {
+        for (i = 0, ruleLength = rules.length; i < ruleLength; i++) {
             var method = rules[i],
                 param = null,
                 failed = false,
@@ -349,11 +350,12 @@
                 }
 
                 var existingError;
-                for (var i = 0; i < this.errors.length; i += 1) {
-                    if (field.id === this.errors[i].id) {
-                        existingError = this.errors[i];
+                for (j = 0; j < this.errors.length; j += 1) {
+                    if (field.id === this.errors[j].id) {
+                        existingError = this.errors[j];
                     }
                 }
+
                 var errorObject = existingError || {
                     id: field.id,
                     display: field.display,
@@ -608,7 +610,6 @@
     };
 
     window.FormValidator = FormValidator;
-
 })(window, document);
 
 /*
