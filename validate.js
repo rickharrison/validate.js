@@ -558,7 +558,7 @@
                 len = typeArray.length;
 
             for (i; i < len; i++) {
-                if (ext == typeArray[i]) inArray = true;
+                if (ext.toUpperCase() == typeArray[i].toUpperCase()) inArray = true;
             }
 
             return inArray;
