@@ -351,7 +351,7 @@
 
                 var existingError;
                 for (j = 0; j < this.errors.length; j += 1) {
-                    if (field.id === this.errors[j].id) {
+                    if (field.name === this.errors[j].name) {
                         existingError = this.errors[j];
                     }
                 }
