@@ -77,16 +77,18 @@
      *         rules: required|matches[password_confirm]
      *     }
      * }]
+     * @param formMessages - Object - Error messages for each field and their respective rules.
      * @param callback - Function - The callback after validation has been performed.
      *     @argument errors - An array of validation errors
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formNameOrNode, fields, callback) {
+    var FormValidator = function(formNameOrNode, fields, formMessages, callback) {
         this.callback = callback || defaults.callback;
         this.errors = [];
         this.fields = {};
         this.form = this._formByNameOrNode(formNameOrNode) || {};
+        this.formMessages = formMessages;
         this.messages = {};
         this.handlers = {};
         this.conditionals = {};
@@ -378,7 +380,7 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[field.name + '.' + method] || this.messages[method] || defaults.messages[method],
+                var source = this.formMessages[field.name][method] || this.messages[field.name + '.' + method] || this.messages[method] || defaults.messages[method],
                     message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
