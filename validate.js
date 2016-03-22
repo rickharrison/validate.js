@@ -168,28 +168,25 @@
 
     FormValidator.prototype.setRules = function(fields) {
         this.fields = {};
-        
-        for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
+
+        for (i in fields) {
+
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
-            if ((!field.name && !field.names) || !field.rules) {
+            if (!field.rules) {
                 console.warn('validate.js: The following field is being skipped due to a misconfiguration:');
                 console.warn(field);
-                console.warn('Check to ensure you have properly configured a name and rules for this field');
+                console.warn('Check to ensure you have properly configured rules for this field');
                 continue;
             }
 
             /*
              * Build the master fields array that has all the information needed to validate
              */
-
-            if (field.names) {
-                for (var j = 0, fieldNamesLength = field.names.length; j < fieldNamesLength; j++) {
-                    this._addField(field, field.names[j]);
-                }
-            } else {
-                this._addField(field, field.name);
+             var fieldName = i.split(',');
+             for (j in fieldName) {
+                this._addField(field, fieldName[j]);
             }
         }
 
