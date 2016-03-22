@@ -321,7 +321,7 @@
         }
         if (this.errors.length == 0) {
             if (typeof this.successCallback === 'function') {
-                this.successCallback();
+                this.successCallback(evt);
             }
         } else {
             if (typeof this.failCallback === 'function') {
