@@ -41,9 +41,6 @@
             less_than_date: 'The %s field must contain an older date than %s.',
             greater_than_or_equal_date: 'The %s field must contain a date that\'s at least as recent as %s.',
             less_than_or_equal_date: 'The %s field must contain a date that\'s %s or older.'
-        },
-        callback: function(errors) {
-
         }
     };
 
@@ -83,7 +80,9 @@
      */
 
     var FormValidator = function(formNameOrNode, fields, callback) {
-        this.callback = callback || defaults.callback;
+        this.callback = callback;
+        this.successCallback = undefined;
+        this.failCallback = undefined;
         this.errors = [];
         this.fields = {};
         this.form = this._formByNameOrNode(formNameOrNode) || {};
@@ -223,6 +222,30 @@
     };
 
     /*
+     * @public
+     * Set a success callback 
+     */
+
+    FormValidator.prototype.onSuccess = function(callback) {
+        this.successCallback = callback;
+
+        // return this for chaining
+        return this;
+    };
+
+    /*
+     * @public
+     * Set a fail callback 
+     */
+
+    FormValidator.prototype.onFail = function(callback) {
+        this.failCallback = callback;
+
+        // return this for chaining
+        return this;
+    };
+
+    /*
      * @private
      * Determines if a form dom node was passed in or just a string representing the form name
      */
@@ -292,8 +315,18 @@
             }
         }
 
+        // Call the callbacks functions
         if (typeof this.callback === 'function') {
             this.callback(this.errors, evt);
+        }
+        if (this.errors.length == 0) {
+            if (typeof this.successCallback === 'function') {
+                this.successCallback();
+            }
+        } else {
+            if (typeof this.failCallback === 'function') {
+                this.failCallback(this.errors, evt);
+            }
         }
 
         if (this.errors.length > 0) {
