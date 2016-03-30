@@ -70,5 +70,7 @@ Chinese - https://github.com/chilijung/validate.js
 
 French - https://github.com/Facyla/validate.js
 
+Brazilian Portuguese - https://github.com/fabiowitt/validate.js
+
 
 [![ghit.me](https://ghit.me/badge.svg?repo=rickharrison/validate.js)](https://ghit.me/repo/rickharrison/validate.js)
