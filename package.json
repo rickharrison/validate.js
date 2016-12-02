@@ -1,0 +1,23 @@
+{
+  "name": "validate-js",
+  "version": "1.5.1",
+  "description": "Lightweight JavaScript form validation library inspired by CodeIgniter.",
+  "main": "validate.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rickharrison/validate.js"
+  },
+  "keywords": [
+    "validate",
+    "form",
+    "dom",
+    "browser",
+    "browserify"
+  ],
+  "author": "Rick Harrison",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rickharrison/validate.js/issues"
+  },
+  "homepage": "https://github.com/rickharrison/validate.js"
+}

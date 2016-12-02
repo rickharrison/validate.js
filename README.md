@@ -15,9 +15,10 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
 
 ## How to use
 
+```javascript
     var validator = new FormValidator('example_form', [{
         name: 'req',
-        display: 'required',    
+        display: 'required',
         rules: 'required'
     }, {
         name: 'alphanumeric',
@@ -39,15 +40,27 @@ validate.js is a lightweight JavaScript form validation library inspired by Code
         name: 'minlength',
         display: 'min length',
         rules: 'min_length[8]'
+    }, {
+        names: ['fname', 'lname'],
+        rules: 'required|alpha'
     }], function(errors) {
         if (errors.length > 0) {
             // Show the errors
         }
     });
+```
 
 ## Documentation
 
 You can view everything at http://rickharrison.github.com/validate.js
+
+## Browserify
+
+It is published to npm under validate-js
+
+```
+npm install validate-js
+```
 
 ## Plugins
 
@@ -58,4 +71,6 @@ jQuery: https://github.com/magizh/validate_helper
 jnhwkim's fork added multi-language support viewable at https://github.com/jnhwkim/validate.js
 
 Chinese - https://github.com/chilijung/validate.js
+
+French - https://github.com/Facyla/validate.js
 
