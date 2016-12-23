@@ -318,7 +318,7 @@
      */
 
     FormValidator.prototype._validateField = function(field) {
-        var i, j,
+        var i, j, ruleLength,
             rules = field.rules.split('|'),
             indexOfRequired = field.rules.indexOf('required'),
             isEmpty = (!field.value || field.value === '' || field.value === undefined);
