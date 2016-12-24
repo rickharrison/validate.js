@@ -303,7 +303,7 @@
         if (this.errors.length > 0) {
             if (evt && evt.preventDefault) {
                 evt.preventDefault();
-            } else if (event) {
+            } else if (typeof event === 'object') {
                 // IE uses the global event variable
                 event.returnValue = false;
             }
