@@ -307,6 +307,7 @@
                 // IE uses the global event variable
                 event.returnValue = false;
             }
+            return false;
         }
 
         return true;
