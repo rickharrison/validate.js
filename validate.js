@@ -90,8 +90,7 @@
         this.handlers = {};
         this.conditionals = {};
 
-        for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
-            var field = fields[i];
+        for (var i = 0, field; field = fields[i]; i++) {
 
             // If passed in incorrectly, we need to skip the field.
             if ((!field.name && !field.names) || !field.rules) {
@@ -133,7 +132,7 @@
         var i;
 
         if ((element.length > 0) && (element[0].type === 'radio' || element[0].type === 'checkbox')) {
-            for (i = 0, elementLength = element.length; i < elementLength; i++) {
+            for (i = 0; element[i]; i++) {
                 if (element[i].checked) {
                     return element[i][attributeName];
                 }
