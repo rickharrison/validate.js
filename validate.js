@@ -41,9 +41,6 @@
             less_than_date: 'The %s field must contain an older date than %s.',
             greater_than_or_equal_date: 'The %s field must contain a date that\'s at least as recent as %s.',
             less_than_or_equal_date: 'The %s field must contain a date that\'s %s or older.'
-        },
-        callback: function(errors) {
-
         }
     };
 
@@ -71,10 +68,11 @@
      * The exposed public object to validate a form:
      *
      * @param formNameOrNode - String - The name attribute of the form (i.e. <form name="myForm"></form>) or node of the form element
-     * @param fields - Array - [{
-     *     name: The name of the element (i.e. <input name="myField" />)
-     *     display: 'Field Name'
-     *     rules: required|matches[password_confirm]
+     * @param fields - Object - {
+     *     (The name or names of the elements): {
+     *         display: 'Field Name'
+     *         rules: required|matches[password_confirm]
+     *     }
      * }]
      * @param callback - Function - The callback after validation has been performed.
      *     @argument errors - An array of validation errors
@@ -82,7 +80,9 @@
      */
 
     var FormValidator = function(formNameOrNode, fields, callback) {
-        this.callback = callback || defaults.callback;
+        this.callback = callback;
+        this.successCallback = undefined;
+        this.failCallback = undefined;
         this.errors = [];
         this.fields = {};
         this.form = this._formByNameOrNode(formNameOrNode) || {};
@@ -90,27 +90,24 @@
         this.handlers = {};
         this.conditionals = {};
 
-        for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
+        for (i in fields) {
+
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
-            if ((!field.name && !field.names) || !field.rules) {
+            if (!field.rules) {
                 console.warn('validate.js: The following field is being skipped due to a misconfiguration:');
                 console.warn(field);
-                console.warn('Check to ensure you have properly configured a name and rules for this field');
+                console.warn('Check to ensure you have properly configured rules for this field');
                 continue;
             }
 
             /*
              * Build the master fields array that has all the information needed to validate
              */
-
-            if (field.names) {
-                for (var j = 0, fieldNamesLength = field.names.length; j < fieldNamesLength; j++) {
-                    this._addField(field, field.names[j]);
-                }
-            } else {
-                this._addField(field, field.name);
+             var fieldName = i.split(',');
+             for (j in fieldName) {
+                this._addField(field, fieldName[j]);
             }
         }
 
@@ -170,28 +167,25 @@
 
     FormValidator.prototype.setRules = function(fields) {
         this.fields = {};
-        
-        for (var i = 0, fieldLength = fields.length; i < fieldLength; i++) {
+
+        for (i in fields) {
+
             var field = fields[i];
 
             // If passed in incorrectly, we need to skip the field.
-            if ((!field.name && !field.names) || !field.rules) {
+            if (!field.rules) {
                 console.warn('validate.js: The following field is being skipped due to a misconfiguration:');
                 console.warn(field);
-                console.warn('Check to ensure you have properly configured a name and rules for this field');
+                console.warn('Check to ensure you have properly configured rules for this field');
                 continue;
             }
 
             /*
              * Build the master fields array that has all the information needed to validate
              */
-
-            if (field.names) {
-                for (var j = 0, fieldNamesLength = field.names.length; j < fieldNamesLength; j++) {
-                    this._addField(field, field.names[j]);
-                }
-            } else {
-                this._addField(field, field.name);
+             var fieldName = i.split(',');
+             for (j in fieldName) {
+                this._addField(field, fieldName[j]);
             }
         }
 
@@ -228,6 +222,30 @@
     };
 
     /*
+     * @public
+     * Set a success callback 
+     */
+
+    FormValidator.prototype.onSuccess = function(callback) {
+        this.successCallback = callback;
+
+        // return this for chaining
+        return this;
+    };
+
+    /*
+     * @public
+     * Set a fail callback 
+     */
+
+    FormValidator.prototype.onFail = function(callback) {
+        this.failCallback = callback;
+
+        // return this for chaining
+        return this;
+    };
+
+    /*
      * @private
      * Determines if a form dom node was passed in or just a string representing the form name
      */
@@ -245,6 +263,7 @@
         this.fields[nameValue] = {
             name: nameValue,
             display: field.display || nameValue,
+            messages: field.messages || {},
             rules: field.rules,
             depends: field.depends,
             id: null,
@@ -296,8 +315,18 @@
             }
         }
 
+        // Call the callbacks functions
         if (typeof this.callback === 'function') {
             this.callback(this.errors, evt);
+        }
+        if (this.errors.length == 0) {
+            if (typeof this.successCallback === 'function') {
+                this.successCallback(evt);
+            }
+        } else {
+            if (typeof this.failCallback === 'function') {
+                this.failCallback(this.errors, evt);
+            }
         }
 
         if (this.errors.length > 0) {
@@ -380,7 +409,7 @@
 
             if (failed) {
                 // Make sure we have a message for this rule
-                var source = this.messages[field.name + '.' + method] || this.messages[method] || defaults.messages[method],
+                var source = field['messages'][method] || this.messages[field.name + '.' + method] || this.messages[method] || defaults.messages[method],
                     message = 'An error has occurred with the ' + field.display + ' field.';
 
                 if (source) {
