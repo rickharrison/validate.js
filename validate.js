@@ -270,6 +270,14 @@
 
                 if (element && element !== undefined) {
                     field.id = attributeValue(element, 'id');
+
+                    if (element.length > 1) {
+                        // console.log('---ISARRAY---')
+                        for (var i = element.length - 1; i >= 0; i--) {
+                            // console.log(element[i])
+                            field.id = element[i].getAttribute('id')
+                        }
+                    }
                     field.element = element;
                     field.type = (element.length > 0) ? element[0].type : element.type;
                     field.value = attributeValue(element, 'value');
