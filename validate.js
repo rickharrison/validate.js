@@ -42,6 +42,9 @@
             greater_than_or_equal_date: 'The %s field must contain a date that\'s at least as recent as %s.',
             less_than_or_equal_date: 'The %s field must contain a date that\'s %s or older.'
         },
+        beforeValidation: function() {
+
+        },
         callback: function(errors) {
 
         }
@@ -81,7 +84,8 @@
      *     @argument event - The javascript event
      */
 
-    var FormValidator = function(formNameOrNode, fields, callback) {
+    var FormValidator = function(formNameOrNode, fields, callback, beforeValidate) {
+        this.beforeValidation  = beforeValidate || defaults.beforeValidation;
         this.callback = callback || defaults.callback;
         this.errors = [];
         this.fields = {};
@@ -262,6 +266,11 @@
 
     FormValidator.prototype._validateForm = function(evt) {
         this.errors = [];
+
+        if (typeof this.beforeValidation === 'function') {
+            this.beforeValidation(evt);
+        }
+
 
         for (var key in this.fields) {
             if (this.fields.hasOwnProperty(key)) {
