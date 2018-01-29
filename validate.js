@@ -412,6 +412,76 @@
             }
         }
     };
+    
+     /*
+     * @public
+     * Accepts a single field name and evaluates against rules for that field
+     * @param  key  A string identifying the field as passed to the constructurthe location of the image, relative to the url argument
+     * @return returns an array of error objects unless validation passes in which case returns true
+     */
+    FormValidator.prototype.validateOne = function(key) {
+        var field = this.fields[key] || {},
+            element = this.form[field.name];
+        /* reset the errors array */
+        this.errors = [];
+
+        if (element && element !== undefined) {
+            field.id = attributeValue(element, 'id');
+            field.element = element;
+            field.type = (element.length > 0) ? element[0].type : element.type;
+            field.value = attributeValue(element, 'value');
+            field.checked = attributeValue(element, 'checked');
+
+            /*
+             * Run through the rules for each field.
+             * If the field has a depends conditional, only validate the field
+             * if it passes the custom function
+             */
+
+            if (field.depends && typeof field.depends === "function") {
+                if (field.depends.call(this, field)) {
+                    this._validateField(field);
+                
+                    if (this.errors.length > 0){
+                        // console.log('eerrs', this.errors)
+
+                        return this.errors;
+                    } else {
+
+                        // console.log('no ers')
+
+                        return true;
+                    }
+
+                }
+            } else if (field.depends && typeof field.depends === "string" && this.conditionals[field.depends]) {
+                if (this.conditionals[field.depends].call(this,field)) {
+                    this._validateField(field);
+                
+                    if (this.errors.length > 0){
+
+                        return this.errors;
+                    } else {
+
+                        return true;
+                    }
+                
+                }
+            } else {
+
+                this._validateField(field);
+                
+                if (this.errors.length > 0){
+
+                    return this.errors;
+                } else {
+                    
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
 
     /**
      * private function _getValidDate: helper function to convert a string date to a Date object
