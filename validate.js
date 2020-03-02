@@ -107,10 +107,10 @@
 
             if (field.names) {
                 for (var j = 0, fieldNamesLength = field.names.length; j < fieldNamesLength; j++) {
-                    this._addField(field, field.names[j]);
+                    this._addField(field, field.key, field.names[j]);
                 }
             } else {
-                this._addField(field, field.name);
+                this._addField(field, field.key, field.name);
             }
         }
 
@@ -240,9 +240,8 @@
      * @private
      * Adds a file to the master fields array
      */
-
-    FormValidator.prototype._addField = function(field, nameValue)  {
-        this.fields[nameValue] = {
+    FormValidator.prototype._addField = function(field, key, nameValue)  {
+        this.fields[key + nameValue] = {
             name: nameValue,
             display: field.display || nameValue,
             rules: field.rules,
